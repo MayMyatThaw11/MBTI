@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create User</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-lime-900 min-h-screen flex items-center justify-center">
+<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Create New User</h1>
+    <form th:action="@{/users/save}" th:object="${user}" method="post" class="space-y-4">
+        <div>
+            <label class="block text-gray-700">Username</label>
+            <input type="text" th:field="*{username}" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-300"/>
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Email</label>
+            <input type="email" th:field="*{email}" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-300"/>
+        </div>
+
+        <div>
+            <label class="block text-gray-700">Password</label>
+            <input type="password" th:field="*{passwordHash}" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-300"/>
+        </div>
+
+        <!-- <div>
+            <label class="block text-gray-700">MBTI Type</label>
+            <select name="mbtiTypeId" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-300">
+                <option value="">Select MBTI Type</option>
+                <option th:each="type : ${mbtiTypes}" 
+                        th:value="${type.id}" 
+                        th:text="${type.code} + ' - ' + ${type.name}">
+                </option>
+            </select>
+        </div> -->
+
+        <div class="text-center">
+            <button type="submit" class="bg-blue-500 w-full text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

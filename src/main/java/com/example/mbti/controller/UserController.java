@@ -45,7 +45,7 @@ public String saveUser(
     
         @ModelAttribute User user,
         @RequestParam("mbtiTypeId") Long mbtiTypeId) {
-            System.out.print(user);
+           
     MbtiType mbtiType = mbtiTypeRepository.findById(mbtiTypeId)
             .orElseThrow(() -> new IllegalArgumentException("Invalid MBTI Type ID"));
     user.setMbtiType(mbtiType);

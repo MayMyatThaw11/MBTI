@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IT Buddy - AI Career Recommender</title>
+
+  <!-- Font Awesome for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1e3c72);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+
+    header h1 {
+      font-size: 1.8em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+    }
+
+    header h1 i {
+      color: #00d8ff;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1em;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h2 {
+      font-size: 2.4em;
+      margin-bottom: 20px;
+      color: #00d8ff;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+      max-width: 600px;
+      line-height: 1.6;
+      animation: fadeIn 3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        flex-direction: column;
+        width: 100%;
+        padding-top: 10px;
+      }
+
+      nav a {
+        width: 100%;
+      }
+
+      .hero h2 {
+        font-size: 1.8em;
+      }
+
+      .hero p {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header>
+    <h1><i class="fas fa-robot"></i> IT Buddy</h1>
+    <nav>
+      <a th:href="@{/}"><i class="fas fa-home"></i> Home</a>
+      <a th:href="@{/about}"><i class="fas fa-info-circle"></i> About</a>
+      <a th:href="@{/users}" style="background-color: #00d8ff; color: white;">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2><i class="fas fa-brain"></i> Welcome to IT Buddy</h2>
+    <p>
+      Discover personalized career paths and courses recommended by our intelligent AI system.
+      Your trusted guide to a successful future in tech and beyond.
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 IT Buddy - University of Information Technology. All rights reserved.
+  </footer>
+</body>
+</html>

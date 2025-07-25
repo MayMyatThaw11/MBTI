@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MBTI Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <h1 class="text-3xl font-bold mb-6">MBTI Questions</h1>
+    
+    <form method="post" action="/questions/submit">
+        <div th:each="question : ${questions}" class="mb-4 p-4 bg-white shadow rounded">
+            <p class="font-medium" th:text="${question.text}"></p>
+            <label class="mr-4">
+                <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="A" required> A
+            </label>
+            <label>
+                <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="B"> B
+            </label>
+        </div>
+        <button type="submit" class="mt-6 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">Submit</button>
+    </form>
+</body>
+</html>

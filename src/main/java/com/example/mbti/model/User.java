@@ -19,10 +19,10 @@ public class User {
     @Column(length = 100, nullable = false, unique = true)
     private String email;
 
-    @Column(length = 255, nullable = false)
+    @Column(name = "password_hash", length = 255, nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -30,6 +30,8 @@ public class User {
     @JoinColumn(name = "mbti_type_id")
     private MbtiType mbtiType;
 
+    @Column(name = "completed_at", nullable = false)
+    @CreationTimestamp  // Use same default behavior as createdAt
     private LocalDateTime completedAt;
 
     // Constructors

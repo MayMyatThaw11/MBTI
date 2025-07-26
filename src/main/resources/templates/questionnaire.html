@@ -7,7 +7,7 @@
         body {
             font-family: Arial, sans-serif;
             padding: 2rem;
-            background-color: #f9f9f9;
+            background-color: #f0f2f5;
         }
 
         h1 {
@@ -16,36 +16,34 @@
         }
 
         form {
-            max-width: 700px;
+            max-width: 800px;
             margin: auto;
-            background-color: #fff;
+            background: white;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
         }
 
         .question {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
+        .question p {
+            font-weight: bold;
         }
 
-        .options {
-            display: flex;
-            gap: 1rem;
+        .options label {
+            margin-right: 20px;
         }
 
         button {
             margin-top: 2rem;
-            padding: 0.75rem 1.5rem;
+            padding: 0.8rem 1.5rem;
             background-color: #007bff;
-            color: white;
             border: none;
-            border-radius: 5px;
+            color: white;
             font-size: 1rem;
+            border-radius: 5px;
             cursor: pointer;
         }
 
@@ -60,18 +58,35 @@
 
 <form method="post" th:action="@{/questions/submit}">
     <div th:each="question : ${questions}" class="question">
-        <label th:text="${question.text}">Question text</label>
+        <p th:text="${question.text}">Question text</p>
         <div class="options">
             <label>
-                <input type="radio" th:name="${question.id}" th:value="${question.direction}" required>
+                <input type="radio" th:name="${question.id}" value="1" required>
+                Strongly Disagree
+            </label>
+            <label>
+                <input type="radio" th:name="${question.id}" value="2">
+                Disagree
+            </label>
+            <label>
+                <input type="radio" th:name="${question.id}" value="3">
+                Neutral
+            </label>
+            <label>
+                <input type="radio" th:name="${question.id}" value="4">
                 Agree
             </label>
             <label>
-                <input type="radio" th:name="${question.id}" th:value="${oppositeMap[question.direction]}" required>
-                Disagree
+                <input type="radio" th:name="${question.id}" value="5">
+                Strongly Agree
             </label>
         </div>
+
+        <!-- Hidden fields to keep direction and dimension -->
+        <input type="hidden" th:name="'dim_' + ${question.id}" th:value="${question.dimension}">
+        <input type="hidden" th:name="'dir_' + ${question.id}" th:value="${question.direction}">
     </div>
+
     <button type="submit">Submit Answers</button>
 </form>
 

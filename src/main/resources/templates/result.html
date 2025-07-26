@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your MBTI Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            padding: 40px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .mbti-type {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f1f3f5;
+            border-radius: 5px;
+        }
+
+        .button-group {
+            margin-top: 2rem;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            margin-right: 1rem;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a.button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎯 Your MBTI Personality Result</h1>
+
+    <div class="mbti-type" th:text="${mbtiType}">[MBTI]</div>
+
+    <h2>💼 Career Recommendations:</h2>
+    <ul>
+        <li th:each="career : ${careerRecommendations}" th:text="${career}">Career Name</li>
+    </ul>
+
+    <div class="button-group">
+        <a href="/questions/start" class="button">🔁 Retake Quiz</a>
+        <a href="/auth/login" class="button">🔐 Back to Login</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MBTI Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 700px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .question {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>MBTI Personality Questionnaire</h1>
+
+<form method="post" th:action="@{/questions/submit}">
+    <div th:each="question : ${questions}" class="question">
+        <label th:text="${question.text}">Question text</label>
+        <div class="options">
+            <label>
+                <input type="radio" th:name="${question.id}" th:value="${question.direction}" required>
+                Agree
+            </label>
+            <label>
+                <input type="radio" th:name="${question.id}" th:value="${oppositeMap[question.direction]}" required>
+                Disagree
+            </label>
+        </div>
+    </div>
+    <button type="submit">Submit Answers</button>
+</form>
+
+</body>
+</html>

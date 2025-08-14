@@ -1,61 +1,72 @@
 package com.example.mbti.model;
 
+
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "questions")
 public class Question {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer questionId;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String text;
+    @Column(columnDefinition = "TEXT")
+    private String questionText;
 
-    // MBTI Dimension this question relates to: EI, SN, TF, JP
-    @Column(nullable = false, length = 5)
-    private String dimension;
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private Section section;
 
-    // Direction the question leans toward: E, I, S, N, T, F, J, P
-    @Column(nullable = false, length = 1)
-    private String direction;
+    private LocalDateTime createdAt;
 
-    // === Constructors ===
-    public Question() {}
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Option> options;
 
-    public Question(String text, String dimension, String direction) {
-        this.text = text;
-        this.dimension = dimension;
-        this.direction = direction;
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
     }
 
-    // === Getters and Setters ===
-    public Long getId() {
-        return id;
+    //Getters
+    public Integer getQuestionId() {
+        return questionId;
+    }
+    public String getQuestionText() {
+        return questionText;
+    }
+    public Section getSection() {
+        return section;    
     }
 
-    public String getText() {
-        return text;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public List<Option> getOptions() {
+        return options;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    //Setters
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
+    }
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
+    }
+    public void setSection(Section section) {
+        this.section = section;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    public void setOptions(List<Option> options) {
+        this.options = options;
     }
 
-    public String getDimension() {
-        return dimension;
-    }
+    // Default constructor
+    public Question() { }
 
-    public void setDimension(String dimension) {
-        this.dimension = dimension;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
+    
+    
 }

@@ -18,14 +18,14 @@ public class UserAnswer {
     // Many answers belong to one Question
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
+    private MBTIQuestions question;
 
     @Column(nullable = false, length = 255)
     private String answer;
 
     public UserAnswer() {}
 
-    public UserAnswer(User user, Question question, String answer) {
+    public UserAnswer(User user, MBTIQuestions question, String answer) {
         this.user = user;
         this.question = question;
         this.answer = answer;
@@ -45,11 +45,11 @@ public class UserAnswer {
         this.user = user;
     }
 
-    public Question getQuestion() {
+    public MBTIQuestions getQuestion() {
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(MBTIQuestions question) {
         this.question = question;
     }
 

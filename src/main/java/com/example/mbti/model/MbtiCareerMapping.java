@@ -9,7 +9,7 @@ public class MbtiCareerMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @ManyToOne
     @JoinColumn(name = "mbti_type_id", nullable = false)

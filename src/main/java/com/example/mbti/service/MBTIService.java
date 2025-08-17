@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.mbti.model.MBTIQuestions;
-import com.example.mbti.model.Question;
 import com.example.mbti.repository.MBTIQuestionRepository;
 import java.util.*;
 

@@ -1,64 +1,67 @@
 package com.example.mbti.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_answers") // or your actual table name
+@Table(name = "user_answers")
 public class UserAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long responseId;
 
-    // Many answers belong to one User
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(nullable = false)
+    private Integer userId;
 
-    // Many answers belong to one Question
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String questionText;
 
-    @Column(nullable = false, length = 255)
-    private String answer;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String optionText;
 
-    public UserAnswer() {
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime answeredAt = LocalDateTime.now();
+
+    // Getters and Setters
+
+    public Long getResponseId() {
+        return responseId;
     }
 
-    public UserAnswer(User user, Question question, String answer) {
-        this.user = user;
-        this.question = question;
-        this.answer = answer;
+    public void setResponseId(Long responseId) {
+        this.responseId = responseId;
     }
 
-    // Getters and setters
-
-    public Long getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public User getUser() {
-        return user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public Question getQuestion() {
-        return question;
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public String getOptionText() {
+        return optionText;
     }
 
-    public String getAnswer() {
-        return answer;
+    public void setOptionText(String optionText) {
+        this.optionText = optionText;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public LocalDateTime getAnsweredAt() {
+        return answeredAt;
+    }
+
+    public void setAnsweredAt(LocalDateTime answeredAt) {
+        this.answeredAt = answeredAt;
     }
 }

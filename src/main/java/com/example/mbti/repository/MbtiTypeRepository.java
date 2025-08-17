@@ -7,4 +7,6 @@ import com.example.mbti.model.MbtiType;
 
 public interface MbtiTypeRepository extends JpaRepository<MbtiType, Long> {
     Optional<MbtiType> findByCode(String code);
-    Optional<MbtiType> findByName(String name);}
+    Optional<MbtiType> findByName(String name);
+
+    Optional<MbtiType> findById(Integer id);}

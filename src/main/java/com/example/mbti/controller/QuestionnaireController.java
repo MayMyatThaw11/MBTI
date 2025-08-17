@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
 @Controller
 @RequestMapping("/questionnaire")
 @SessionAttributes("mbtiAnswers") // store MBTI answers temporarily
@@ -56,8 +55,7 @@ public class QuestionnaireController {
                 "E", "I", "I", "E",
                 "S", "N", "N", "S",
                 "T", "F", "F", "T",
-                "J", "P", "P", "J"
-        );
+                "J", "P", "P", "J");
     }
 
     // Step 1: Show MBTI Questions
@@ -83,25 +81,23 @@ public class QuestionnaireController {
         String mbtiTypeString = mbtiService.calculateMbti(answers);
         System.out.println("Calculated MBTI Type: " + mbtiTypeString);
         // Store MBTI type in model
-        User user = userRepository.findById(1L)
-            .orElseThrow(() -> new RuntimeException("User not found"));     
-            System.out.println("User found: " + user.getUsername());
+        User user = userRepository.findById((int) 1L)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("User found: " + user.getUsername());
         // Fetch MBTI type from repository
         mbtiTypeRepository.findAll().forEach(mbtiType -> {
             System.out.println("MBTI Type: " + mbtiType.getCode());
-        });                        
-      MbtiType mbti = mbtiTypeRepository.findByCode(mbtiTypeString)
-            .orElseThrow(() -> new RuntimeException("MBTI type not found: " + mbtiTypeString));
-            System.out.println("MBTI Type found: " + mbti.getCode());
+        });
+        MbtiType mbti = mbtiTypeRepository.findByCode(mbtiTypeString)
+                .orElseThrow(() -> new RuntimeException("MBTI type not found: " + mbtiTypeString));
+        System.out.println("MBTI Type found: " + mbti.getCode());
         user.setMbtiType(mbti);
         user.setCompletedAt(LocalDateTime.now());
         userRepository.save(user);
-        
 
         // Redirect to custom questionnaire
         return "redirect:/questionnaire/custom";
     }
-
 
     // Step 3: Show Custom Questionnaire
     @GetMapping("/custom")
@@ -114,8 +110,7 @@ public class QuestionnaireController {
                 "Agree",
                 "Neutral",
                 "Disagree",
-                "Strongly Disagree"
-        );
+                "Strongly Disagree");
 
         model.addAttribute("sections", sections);
         model.addAttribute("questions", questions);
@@ -126,100 +121,99 @@ public class QuestionnaireController {
     }
 
     @PostMapping("/custom/submit")
-public String submitCustomAnswers(@RequestParam Map<String, String> customAnswers,
-                                  @ModelAttribute("mbtiAnswers") Map<String, String> mbtiAnswers,
-                                  Model model, SessionStatus sessionStatus) {
-    System.out.println("You are in submit");
-    System.out.println("MBTI Answers: " + mbtiAnswers);
-    System.out.println("Custom Answers: " + customAnswers);
-     
+    public String submitCustomAnswers(@RequestParam Map<String, String> customAnswers,
+            @ModelAttribute("mbtiAnswers") Map<String, String> mbtiAnswers,
+            Model model, SessionStatus sessionStatus) {
+        System.out.println("You are in submit");
+        System.out.println("MBTI Answers: " + mbtiAnswers);
+        System.out.println("Custom Answers: " + customAnswers);
 
-    
-    User user = userRepository.findById(1L)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById((int) 1L)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        
-       customAnswers.forEach((key, value) -> {
-    try {
-        // Extract question number (e.g., "q_1[]" → "1")
-        String questionNumber = key.replaceAll("\\D", "");
-    
-        if (questionNumber.isEmpty()) return;
-        System.out.println("Processing answer for question number: " + questionNumber);
+        customAnswers.forEach((key, value) -> {
+            try {
+                // Extract question number (e.g., "q_1[]" → "1")
+                String questionNumber = key.replaceAll("\\D", "");
 
-        Question question = questionRepository.findById(Integer.parseInt(questionNumber))
-                .orElseThrow(() -> new RuntimeException("Question not found: " + key));
-       
+                if (questionNumber.isEmpty())
+                    return;
+                System.out.println("Processing answer for question number: " + questionNumber);
 
-        UserAnswer userAnswer = new UserAnswer(user, question, value);
-        
-        userAnswerRepository.save(userAnswer);
+                Question question = questionRepository.findById(Integer.parseInt(questionNumber))
+                        .orElseThrow(() -> new RuntimeException("Question not found: " + key));
 
-    } catch (Exception e) {
-        System.err.println("Failed to save answer for key: " + key + ", error: " + e.getMessage());
+                UserAnswer userAnswer = new UserAnswer();
+                userAnswer.setUserId(user.getId());
+                userAnswer.setQuestionText(question.getQuestionText());
+                userAnswer.setOptionText(value);
+                userAnswer.setAnsweredAt(LocalDateTime.now());
+                System.out.println("Saving answer for question: " + question.getQuestionText() + ", answer: " + value);
+
+                userAnswerRepository.save(userAnswer);
+
+            } catch (Exception e) {
+                System.err.println("Failed to save answer for key: " + key + ", error: " + e.getMessage());
+            }
+        });
+
+        System.out.println("Custom answers saved successfully for user: " + user.getUsername());
+        String mbtiTypeString = user.getMbtiType() != null ? user.getMbtiType().getCode() : "Unknown";
+        System.out.println("User MBTI type: " + mbtiTypeString);
+
+        // 4️⃣ Prepare recommended careers
+        List<String> recommendedCareers = mbtiService.recommendCareers(mbtiTypeString);
+        System.out.println("Recommended careers for MBTI type : " + recommendedCareers);
+
+        // 5️⃣ Add attributes for result page
+        model.addAttribute("user", user);
+        model.addAttribute("mbtiType", mbtiTypeString);
+        model.addAttribute("careerRecommendations", recommendedCareers);
+        model.addAttribute("customAnswers", customAnswers);
+
+        // 6️⃣ Clean session
+        sessionStatus.setComplete();
+
+        return "result";
+
     }
-});
 
-System.out.println("Custom answers saved successfully for user: " + user.getUsername());
-String mbtiTypeString = user.getMbtiType() != null ? user.getMbtiType().getCode() : "Unknown";
-System.out.println("User MBTI type: " + mbtiTypeString);
-
-    // 4️⃣ Prepare recommended careers
-    List<String> recommendedCareers = mbtiService.recommendCareers(mbtiTypeString);
-    System.out.println("Recommended careers for MBTI type : "  + recommendedCareers);
-
-    // 5️⃣ Add attributes for result page
-    model.addAttribute("user", user);
-    model.addAttribute("mbtiType", mbtiTypeString);
-    model.addAttribute("careerRecommendations", recommendedCareers);
-    model.addAttribute("customAnswers", customAnswers);
-
-    // 6️⃣ Clean session
-    sessionStatus.setComplete();
-
-    return "result";
-      
-            
-    }
-
-       
-    
 }
 
+// Step 4: Submit Custom Questionnaire and show final result
+// @PostMapping("/custom/submit")
+// public String submitCustomAnswers(@RequestParam Map<String, String>
+// customAnswers,
+// @ModelAttribute("mbtiAnswers") Map<String, String> mbtiAnswers,
+// Model model, SessionStatus sessionStatus) {
+// System.out.print("You are in submit");
+// // Calculate MBTI type from stored MBTI answers
+// System.out.println("MBTI Answers: " + mbtiAnswers);
+// System.out.println("Custom Answers: " + customAnswers);
 
-    // Step 4: Submit Custom Questionnaire and show final result
-    // @PostMapping("/custom/submit")
-    // public String submitCustomAnswers(@RequestParam Map<String, String> customAnswers,
-    //                                   @ModelAttribute("mbtiAnswers") Map<String, String> mbtiAnswers,
-    //                                   Model model, SessionStatus sessionStatus) {
-    //      System.out.print("You are in submit");                               
-    //     // Calculate MBTI type from stored MBTI answers
-    //     System.out.println("MBTI Answers: " + mbtiAnswers);
-    //     System.out.println("Custom Answers: " + customAnswers);
-       
-    //     String mbtiTypeString = mbtiService.calculateMbti(mbtiAnswers);
+// String mbtiTypeString = mbtiService.calculateMbti(mbtiAnswers);
 
-    //     // Fetch user (replace with logged-in user logic)
-    //     User user = userRepository.findById(1L)
-    //             .orElseThrow(() -> new RuntimeException("User not found"));
+// // Fetch user (replace with logged-in user logic)
+// User user = userRepository.findById(1L)
+// .orElseThrow(() -> new RuntimeException("User not found"));
 
-    //     MbtiType mbti = mbtiTypeRepository.findByName(mbtiTypeString)
-    //             .orElseThrow(() -> new RuntimeException("MBTI type not found: " + mbtiTypeString));
+// MbtiType mbti = mbtiTypeRepository.findByName(mbtiTypeString)
+// .orElseThrow(() -> new RuntimeException("MBTI type not found: " +
+// mbtiTypeString));
 
-    //     user.setMbtiType(mbti);
-    //     System.out.println("User MBTI type set to: " + mbti);
-    //     userRepository.save(user);
+// user.setMbtiType(mbti);
+// System.out.println("User MBTI type set to: " + mbti);
+// userRepository.save(user);
 
-    //     // Remove session attribute
-    //     sessionStatus.setComplete();
+// // Remove session attribute
+// sessionStatus.setComplete();
 
-    //     // Prepare data for final result page
-    //     model.addAttribute("user", user);
-    //     model.addAttribute("mbtiType", mbtiTypeString);
-    //     model.addAttribute("careerRecommendations", mbtiService.recommendCareers(mbtiTypeString));
-    //     model.addAttribute("customAnswers", customAnswers);
+// // Prepare data for final result page
+// model.addAttribute("user", user);
+// model.addAttribute("mbtiType", mbtiTypeString);
+// model.addAttribute("careerRecommendations",
+// mbtiService.recommendCareers(mbtiTypeString));
+// model.addAttribute("customAnswers", customAnswers);
 
-    //     return "result"; // final result page
-    // }
-
-
+// return "result"; // final result page
+// }

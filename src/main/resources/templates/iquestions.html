@@ -34,9 +34,10 @@
     }
 
     /* Custom radio styles */
-    input[type="radio"].form-radio:checked + label {
+    input[type="radio"].form-radio:checked+label {
       font-weight: 600;
-      color: #4f46e5; /* Indigo-600 */
+      color: #4f46e5;
+      /* Indigo-600 */
     }
 
     /* Navigation buttons */
@@ -61,8 +62,7 @@
       <!-- Progress dots -->
       <div class="flex justify-center space-x-4 mb-8">
         <template th:each="section, secStat : ${sections}">
-          <button type="button"
-            th:data-index="${secStat.index}"
+          <button type="button" th:data-index="${secStat.index}"
             class="w-4 h-4 rounded-full bg-gray-300 hover:bg-indigo-400 transition-colors duration-300"
             aria-label="Section [[${secStat.index + 1}]]">
           </button>
@@ -72,8 +72,7 @@
       <!-- iterate sections -->
       <div th:each="section, secStat : ${sections}"
         class="section-block rounded-lg p-6 border border-gray-200 shadow-sm bg-white"
-        th:classappend="${secStat.index == 0} ? 'active' : ''"
-        th:attr="data-index=${secStat.index}">
+        th:classappend="${secStat.index == 0} ? 'active' : ''" th:attr="data-index=${secStat.index}">
 
         <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
           <div>
@@ -91,19 +90,19 @@
             <p class="font-semibold text-lg mb-3" th:text="${question.questionText}">Question text</p>
 
             <!-- SECTION 1: checkboxes -->
-            <div th:if="${section.sectionId == 1}"
-              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div th:if="${section.sectionId == 1}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <label th:each="option : ${question.options}"
                 class="flex items-center space-x-3 bg-indigo-50 rounded-md p-3 cursor-pointer hover:bg-indigo-100 transition">
-                <input type="checkbox" th:name="${'q_' + question.questionId + '[]'}"
-                  th:value="${option.optionText}" class="form-checkbox h-5 w-5 text-indigo-600" />
+                <input type="checkbox" th:name="${'q_' + question.questionId + '[]'}" th:value="${option.optionText}"
+                  class="form-checkbox h-5 w-5 text-indigo-600" />
                 <span th:text="${option.optionText}" class="text-md"></span>
               </label>
             </div>
 
+            ✅
+
             <!-- SECTION 2 & 3: radios -->
-            <div th:if="${section.sectionId != 1}"
-              class="radio-row">
+            <div th:if="${section.sectionId != 1}" class="radio-row">
 
               <!-- If question.options is NOT empty, use them -->
               <label th:if="${#lists.isNotEmpty(question.options)}" th:each="option : ${question.options}"
@@ -222,6 +221,3 @@
 </body>
 
 </html>
-
-
-

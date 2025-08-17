@@ -1,55 +1,53 @@
 package com.example.mbti.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.mbti.model.MBTIQuestions;
+import com.example.mbti.model.Question;
+import com.example.mbti.repository.MBTIQuestionRepository;
 import java.util.*;
 
 @Service
 public class MBTIService {
 
+    @Autowired
+    private MBTIQuestionRepository mbtiQuestionRepository;
+
     public String calculateMbti(Map<String, String> answers) {
         Map<String, Integer> scores = new HashMap<>();
         String[] types = {"E", "I", "S", "N", "T", "F", "J", "P"};
-        for (String type : types) {
-            scores.put(type, 0);
-        }
+        for (String type : types) scores.put(type, 0);
 
         for (String key : answers.keySet()) {
-            if (key.startsWith("dim_") || key.startsWith("dir_")) continue;
-
             try {
                 int questionId = Integer.parseInt(key);
-                int responseValue = Integer.parseInt(answers.get(key)); // 1–5
+                int responseValue = Integer.parseInt(answers.get(key));
 
-                String dimension = answers.get("dim_" + questionId); // EI, SN...
-                String direction = answers.get("dir_" + questionId); // E, S, etc.
+                MBTIQuestions q = mbtiQuestionRepository.findById(questionId)
+        .orElseThrow(() -> new RuntimeException("Question not found: " + questionId));
 
-                int delta = responseValue - 3; // Neutral is 3
+
+                String direction = q.getDirection(); // <-- Must be "E", "I", etc.
+                if (direction == null) continue;
+
+                int delta = responseValue - 3; // neutral = 3
                 if (delta > 0) {
                     scores.put(direction, scores.get(direction) + delta);
                 } else if (delta < 0) {
                     String opposite = getOpposite(direction);
                     scores.put(opposite, scores.get(opposite) + Math.abs(delta));
                 }
-                // delta == 0: no change
             } catch (NumberFormatException ex) {
-                // Ignore non-question keys
+                // ignore non-numeric keys
             }
         }
 
-        // Check for ties (all zero scores)
-        boolean allZero = true;
-        for (String t : types) {
-            if (scores.get(t) != 0) {
-                allZero = false;
-                break;
-            }
-        }
-        if (allZero) {
-            return "NNNN"; // Neutral for all dimensions — or return null or special string
-        }
+        // All zero scores
+        boolean allZero = scores.values().stream().allMatch(s -> s == 0);
+        if (allZero) return "NNNN";
 
-        // Build MBTI string with tie-breakers (if tie, pick first direction)
+        // Build MBTI
         String ei = tieBreaker(scores, "E", "I");
         String sn = tieBreaker(scores, "S", "N");
         String tf = tieBreaker(scores, "T", "F");
@@ -59,15 +57,7 @@ public class MBTIService {
     }
 
     private String tieBreaker(Map<String, Integer> scores, String dir1, String dir2) {
-        int score1 = scores.get(dir1);
-        int score2 = scores.get(dir2);
-
-        // If tie, pick dir1 by default
-        if (score1 >= score2) {
-            return dir1;
-        } else {
-            return dir2;
-        }
+        return scores.get(dir1) >= scores.get(dir2) ? dir1 : dir2;
     }
 
     private String getOpposite(String dir) {
@@ -102,7 +92,6 @@ public class MBTIService {
         careerMap.put("ISFP", List.of("Artist", "Designer", "Chef", "Musician", "Counselor"));
         careerMap.put("ESTP", List.of("Sales Representative", "Entrepreneur", "Athlete", "Paramedic", "Marketer"));
         careerMap.put("ESFP", List.of("Actor", "Event Planner", "Sales Representative", "Entertainer", "Public Relations"));
-
         return careerMap.getOrDefault(mbti, List.of("Career not found"));
     }
 }

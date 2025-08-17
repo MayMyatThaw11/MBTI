@@ -9,12 +9,13 @@
         }
         table {
             border-collapse: collapse;
-            width: 80%;
+            width: 90%;
             margin: 20px auto;
         }
         th, td {
             border: 1px solid #ccc;
             padding: 8px;
+            text-align: left;
         }
         th {
             background: #eee;
@@ -30,6 +31,9 @@
                 <th>Code</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Key Traits</th>
+                <th>Strengths</th>
+                <th>Weaknesses</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +42,9 @@
                 <td th:text="${type.code}"></td>
                 <td th:text="${type.name}"></td>
                 <td th:text="${type.description}"></td>
+                <td th:text="${type.keyTraits}"></td>
+                <td th:text="${type.strengths}"></td>
+                <td th:text="${type.weaknesses}"></td>
             </tr>
         </tbody>
     </table>

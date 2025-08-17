@@ -4,6 +4,6 @@ import com.example.mbti.model.MBTIQuestions;
 
 
 
-public interface MBTIQuestionRepository  extends JpaRepository<MBTIQuestions, Long> {
+public interface MBTIQuestionRepository  extends JpaRepository<MBTIQuestions, Integer> {
    
 }

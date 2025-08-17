@@ -8,7 +8,7 @@ public class MBTIQuestions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String text;
@@ -31,7 +31,7 @@ public class MBTIQuestions {
     }
 
     // === Getters and Setters ===
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

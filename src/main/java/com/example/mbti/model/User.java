@@ -22,22 +22,30 @@ public class User {
     @Column(name = "password_hash", length = 255, nullable = false)
     private String passwordHash;
 
+    // Automatically set when user is created
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    // Many-to-one relationship with MBTI type (nullable if user hasn't completed)
     @ManyToOne
     @JoinColumn(name = "mbti_type_id")
     private MbtiType mbtiType;
 
-    @Column(name = "completed_at", nullable = false)
-    @CreationTimestamp  // Use same default behavior as createdAt
+    // Completion time, set manually when user finishes questionnaire
+    @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    // Constructors
+    // ===== Constructors =====
     public User() {}
 
-    // Getters and setters
+    public User(String username, String email, String passwordHash) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
+
+    // ===== Getters & Setters =====
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

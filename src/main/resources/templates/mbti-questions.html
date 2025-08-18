@@ -1,24 +1,226 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MBTI Questions</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personality Survey</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      /* background: #f7f7f7; */
+      background: 
+        radial-gradient(1200px 600px at 10% 10%, rgba(79,70,229,0.25), transparent 60%),
+        radial-gradient(800px 500px at 90% 20%, rgba(16,185,129,0.25), transparent 60%),
+        linear-gradient(135deg, #0f172a, #1f2937 40%, #111827);
+      margin: 0;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #9ff2ff;
+      margin-bottom: 40px;
+      font-size: 32px;
+    }
+
+    .survey-container {
+      background: #dadada;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .question-block {
+      margin-bottom: 50px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .question {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #222;
+    }
+
+    .options {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .label {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .agree { color: #2e8b57; }
+    .disagree { color: #7d4c9e; }
+
+    /* Circles */
+    .circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      background-color: transparent;
+    }
+
+    .agree-border { border-color: #2e8b57; }
+    .neutral-border { border-color: #999; }
+    .disagree-border { border-color: #7d4c9e; }
+
+    /* Hover (temporary checkmark) */
+    .circle:hover::after {
+      content: "✔";
+      font-size: 20px;
+      color: #fff;
+    }
+    .circle.agree-border:hover {
+      background-color: #2e8b57;
+    }
+    .circle.neutral-border:hover {
+      background-color: #666;
+    }
+    .circle.disagree-border:hover {
+      background-color: #7d4c9e;
+    }
+
+    /* Active (clicked, stays highlighted) */
+    .circle.active::after {
+      content: "✔";
+      font-size: 20px;
+      color: #fff;
+    }
+    .circle.active.agree-border {
+      background-color: #2e8b57;
+      border-color: #2e8b57;
+    }
+    .circle.active.neutral-border {
+      background-color: #666;
+      border-color: #666;
+    }
+    .circle.active.disagree-border {
+      background-color: #7d4c9e;
+      border-color: #7d4c9e;
+    }
+
+    /* Submit button */
+    .submit-btn {
+      display: block;
+      margin: 40px auto 0;
+      padding: 15px 40px;
+      font-size: 18px;
+      background-color: #9ff2ff;
+      color: #aba9a9;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .submit-btn:hover {
+      background-color: #fcfcfc;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 p-8">
-    <h1 class="text-3xl font-bold mb-6">MBTI Questions</h1>
-    
-    <form method="post" action="/questions/submit">
-        <div th:each="question : ${questions}" class="mb-4 p-4 bg-white shadow rounded">
-            <p class="font-medium" th:text="${question.text}"></p>
-            <label class="mr-4">
-                <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="A" required> A
-            </label>
-            <label>
-                <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="B"> B
-            </label>
-        </div>
-        <button type="submit" class="mt-6 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">Submit</button>
-    </form>
+<body>
+  <h1>MBTI Type</h1>
+  <div class="survey-container" id="survey"></div>
+  <button class="submit-btn" id="submitBtn">Submit</button>
+
+  <script>
+    const questions = [
+      "You enjoy exploring complex and abstract ideas.",
+      "Working in a team energizes you more than working alone.",
+      "You usually rely on logic more than emotions in decisions.",
+      "Taking risks in unfamiliar situations excites you.",
+      "You find it easy to empathize with other people’s emotions.",
+      "You prefer detailed planning over spontaneity.",
+      "You like debating ideas, even if you don’t fully agree.",
+      "You get energized by meeting new people.",
+      "You often reflect deeply about your past experiences.",
+      "You prefer trying new things instead of following routines.",
+      "You like to take leadership roles in group settings.",
+      "You often think about long-term goals.",
+      "You enjoy artistic and creative activities.",
+      "You find it easy to stay calm in stressful situations.",
+      "You prefer evidence and data over intuition.",
+      "You adapt easily when plans suddenly change.",
+      "You are more motivated by challenges than rewards.",
+      "You enjoy learning new skills just for fun.",
+      "You usually express your feelings openly.",
+      "You like to have clear structure and rules in life."
+    ];
+
+    const surveyEl = document.getElementById("survey");
+
+    questions.forEach((q, index) => {
+      const block = document.createElement("div");
+      block.classList.add("question-block");
+
+      const questionText = document.createElement("div");
+      questionText.classList.add("question");
+      questionText.textContent = `${index + 1}. ${q}`;
+      block.appendChild(questionText);
+
+      const options = document.createElement("div");
+      options.classList.add("options");
+
+      options.innerHTML = `
+        <span class="label agree">Agree</span>
+        <div class="circle agree-border"></div>
+        <div class="circle agree-border"></div>
+        <div class="circle agree-border"></div>
+        <div class="circle neutral-border"></div>
+        <div class="circle disagree-border"></div>
+        <div class="circle disagree-border"></div>
+        <div class="circle disagree-border"></div>
+        <span class="label disagree">Disagree</span>
+      `;
+
+      block.appendChild(options);
+      surveyEl.appendChild(block);
+    });
+
+    // Handle circle selection
+    document.querySelectorAll(".options").forEach(group => {
+      const circles = group.querySelectorAll(".circle");
+      circles.forEach(circle => {
+        circle.addEventListener("click", () => {
+          circles.forEach(c => c.classList.remove("active"));
+          circle.classList.add("active");
+        });
+      });
+    });
+
+    // Submit button click
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const allQuestions = document.querySelectorAll(".question-block");
+      const results = [];
+
+      allQuestions.forEach(block => {
+        const activeCircle = block.querySelector(".circle.active");
+        if(activeCircle){
+          if(activeCircle.classList.contains("agree-border")) results.push("Agree");
+          else if(activeCircle.classList.contains("neutral-border")) results.push("Neutral");
+          else if(activeCircle.classList.contains("disagree-border")) results.push("Disagree");
+        } else {
+          results.push("No answer");
+        }
+      });
+
+      console.log("Survey results:", results);
+      alert("Survey submitted! Check console for results.");
+    });
+  </script>
 </body>
 </html>

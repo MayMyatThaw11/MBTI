@@ -98,7 +98,6 @@ public class UserAnswerController {
 
     private final UserAnswerRepository userAnswerRepository;
     private final UserRepository userRepository;
-    private final MbtiTypeRepository mbtiTypeRepository;
     private final RestTemplate restTemplate;
 
     private final CareerRecommendationRepository recommendationRepository;

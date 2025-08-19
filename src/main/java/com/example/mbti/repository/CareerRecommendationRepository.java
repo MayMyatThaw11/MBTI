@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.mbti.model.CareerRecommendation;
 
 @Repository
-public interface CareerRecommendationRepository extends JpaRepository<CareerRecommendation, Long> {
+public interface CareerRecommendationRepository extends JpaRepository<CareerRecommendation, Integer> {
     // Optional: find all recommendations by userId
-    List<CareerRecommendation> findByUserId(Long userId);
+    List<CareerRecommendation> findByUserId(Integer userId);
 }

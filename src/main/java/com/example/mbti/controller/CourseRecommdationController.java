@@ -49,7 +49,7 @@ public class CourseRecommdationController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("course", new CourseRecommendation());
-        model.addAttribute("careers", careerRepo.findAll());
+        model.addAttribute("careers", careerRepository.findAll());
         return "courses/form";
     }
 
@@ -65,7 +65,7 @@ public class CourseRecommdationController {
     public String editCourse(@PathVariable Long id, Model model) {
         CourseRecommendation course = courseRepository.findById(id).orElseThrow();
         model.addAttribute("course", course);
-        model.addAttribute("careers", careerRepo.findAll());
+        model.addAttribute("careers", careerRepository.findAll());
         return "courses/form";
     }
 

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Recommendations</title>
+</head>
+<body>
+<h1>User Career Recommendations</h1>
+
+<ul>
+    <li th:each="dto : ${userCareers}">
+        <h2 th:text="${dto.career.title}">Career Title</h2>
+        <p>Score: <span th:text="${dto.score}">0.0</span></p>
+        <ul>
+           <li th:each="course : ${dto.courses}">
+                <a th:href="${course.url}" th:text="${course.courseName}" target="_blank">Course Name</a>
+                <span th:text="' (' + course.platform + ')'"></span>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+</body>
+</html>

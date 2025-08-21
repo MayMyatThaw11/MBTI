@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface CourseRecommendationRepository extends JpaRepository<CourseRecommendation, Long> {
     List<CourseRecommendation> findByCareer(Career career);
+    List<CourseRecommendation> findByCareerId(Integer careerId);
 }

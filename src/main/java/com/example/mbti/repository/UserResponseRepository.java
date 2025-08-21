@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserResponseRepository extends JpaRepository<UserResponse, Long> {
-    // You can add custom queries if needed
+    
 }

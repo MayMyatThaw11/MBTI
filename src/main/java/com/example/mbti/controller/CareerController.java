@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.mbti.service.CareerRecommendationService;
 
-import java.util.*;
+
 
 @RestController
 @RequestMapping("/api")

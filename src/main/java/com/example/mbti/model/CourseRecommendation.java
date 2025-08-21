@@ -3,7 +3,7 @@ package com.example.mbti.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "course_recommendations")
+@Table(name = "learning_resources")
 public class CourseRecommendation {
 
     @Id

@@ -17,6 +17,7 @@ public class CareerRecommendationService {
     }
 
   public List<CareerRecommendation> getCareerRecommendations(List<Map<String, Object>> userAnswers, int topN) {
+    System.out.println("Sending user answers to Python service: " + userAnswers);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 

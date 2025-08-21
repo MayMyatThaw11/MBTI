@@ -4,13 +4,12 @@ import com.example.mbti.model.CareerRecommendation;
 import com.example.mbti.model.RecommendationResponse;
 import com.example.mbti.model.User;
 import com.example.mbti.model.UserAnswer;
-import com.example.mbti.model.DTO.UserAnswerDTO;
 import com.example.mbti.repository.CareerRecommendationRepository;
 import com.example.mbti.repository.MbtiTypeRepository;
 import com.example.mbti.repository.UserAnswerRepository;
 import com.example.mbti.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 // import java.util.ArrayList;
 // import java.util.List;
@@ -88,7 +87,6 @@ import org.springframework.web.bind.annotation.*;
 // }
 
 import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -99,6 +97,7 @@ public class UserAnswerController {
     private final UserAnswerRepository userAnswerRepository;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
+    private final MbtiTypeRepository mbtiTypeRepository;
 
     private final CareerRecommendationRepository recommendationRepository;
 
@@ -175,6 +174,8 @@ public class UserAnswerController {
 
         return result;
     }
+
+    
 
     public void saveRecommendations(Integer userId, List<Map<String, Object>> recommendations) {
         List<CareerRecommendation> entities = new ArrayList<>();

@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -122,60 +121,7 @@ public class QuestionnaireController {
         return "iquestions"; // custom questionnaire page
     }
 
-    // @PostMapping("/custom/submit")
-    // public String submitCustomAnswers(@RequestParam Map<String, String[]> customAnswers,
-    //         @ModelAttribute("mbtiAnswers") Map<String, String> mbtiAnswers,
-    //         Model model, SessionStatus sessionStatus) {
-    //     System.out.println("You are in submit");
-    //     System.out.println("MBTI Answers: " + mbtiAnswers);
-    //     System.out.println("Custom Answers: " + customAnswers);
-
-    //     User user = userRepository.findById((int) 1L)
-    //             .orElseThrow(() -> new RuntimeException("User not found"));
-
-    //     customAnswers.forEach((key, values) -> {
-    //         try {
-    //             String questionNumber = key.replaceAll("\\D", "");
-    //             if (questionNumber.isEmpty())
-    //                 return;
-
-    //             Question question = questionRepository.findById(Integer.parseInt(questionNumber))
-    //                     .orElseThrow(() -> new RuntimeException("Question not found: " + key));
-
-    //             for (String value : values) { // iterate over all selected answers
-    //                 System.out.println("Processing answer for question: " + question.getQuestionText() + ", answer: " + value);
-    //                 UserAnswer userAnswer = new UserAnswer();
-    //                 userAnswer.setUserId(user.getId());
-    //                 userAnswer.setQuestionText(question.getQuestionText());
-    //                 userAnswer.setOptionText(value);
-    //                 userAnswer.setAnsweredAt(LocalDateTime.now());
-    //                 userAnswerRepository.save(userAnswer);
-    //             }
-    //         } catch (Exception e) {
-    //             System.err.println("Failed to save answer for key: " + key + ", error: " + e.getMessage());
-    //         }
-    //     });
-
-    //     System.out.println("Custom answers saved successfully for user: " + user.getUsername());
-    //     String mbtiTypeString = user.getMbtiType() != null ? user.getMbtiType().getCode() : "Unknown";
-    //     System.out.println("User MBTI type: " + mbtiTypeString);
-
-    //     // 4️⃣ Prepare recommended careers
-    //     List<String> recommendedCareers = mbtiService.recommendCareers(mbtiTypeString);
-    //     System.out.println("Recommended careers for MBTI type : " + recommendedCareers);
-
-    //     // 5️⃣ Add attributes for result page
-    //     model.addAttribute("user", user);
-    //     model.addAttribute("mbtiType", mbtiTypeString);
-    //     model.addAttribute("careerRecommendations", recommendedCareers);
-    //     model.addAttribute("customAnswers", customAnswers);
-
-    //     // 6️⃣ Clean session
-    //     sessionStatus.setComplete();
-
-    //     return "result";
-
-    // }
+    
 
 
 
@@ -223,15 +169,16 @@ public String submitCustomAnswers(
     List<String> recommendedCareers = mbtiService.recommendCareers(mbtiTypeString);
 
     // Add attributes for result page
-    model.addAttribute("user", user);
-    model.addAttribute("mbtiType", mbtiTypeString);
-    model.addAttribute("careerRecommendations", recommendedCareers);
-    model.addAttribute("customAnswers", customAnswersRaw);
+    // model.addAttribute("user", user);
+    // model.addAttribute("mbtiType", mbtiTypeString);
+    // model.addAttribute("careerRecommendations", recommendedCareers);
+    // model.addAttribute("customAnswers", customAnswersRaw);
 
     // Clear session
     sessionStatus.setComplete();
 
-    return "result";
+    // return "result";
+    return "redirect:/useranswer/" + user.getId();
 }
 
 

@@ -10,7 +10,7 @@ public class CareerRecommendation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer userId; // store which user this recommendation is for
+    private Integer userId; 
     private String career;
     private double score;
 

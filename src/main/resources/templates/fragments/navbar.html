@@ -1,0 +1,53 @@
+<!--templates/fragments/navbar.html
+<div th:fragment="navbar">
+  <nav class="flex justify-between items-center px-4 md:px-16 py-4 bg-white/10 backdrop-blur-md w-full shadow-md">
+    <div class="text-xl md:text-2xl font-extrabold flex items-center gap-2">
+      <svg class="w-7 h-7 md:w-8 md:h-8 text-white animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M9 18v1a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-1M9 18H6a2 2 0 0 1-2-2v-5h16v5a2 2 0 0 1-2 2h-3M9 18V9a3 3 0 0 1 6 0v9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9" cy="13" r="1" fill="currentColor"/>
+        <circle cx="15" cy="13" r="1" fill="currentColor"/>
+      </svg>
+      <span>ITBuddy</span>
+    </div>
+
+    <ul class="hidden md:flex space-x-8 text-lg font-medium">
+      <li><a th:href="@{/#home}" class="hover:text-gray-300 transition">Home</a></li>
+      <li><a th:href="@{/#features}" class="hover:text-gray-300 transition">Features</a></li>
+      <li><a th:href="@{/#about}" class="hover:text-gray-300 transition">About</a></li>
+      <li><a th:href="@{/#contact}" class="hover:text-gray-300 transition">Contact</a></li>
+      <li><a th:href="@{/MbtiDescription}" class="hover:text-gray-300 transition ">MBTI Description</a></li>
+    </ul>
+
+    <button id="openLogin" class="hidden md:block border border-white px-4 py-1 rounded hover:bg-white hover:text-black transition">Login</button>
+    <button id="openLoginMobile" class="md:hidden text-sm border px-3 py-1 rounded hover:bg-white hover:text-black transition">Login</button>
+  </nav>
+</div> -->
+
+<!-- templates/fragments/navbar.html -->
+<div th:fragment="navbar">
+  <nav th:class="${page == 'home'} ?
+    'flex justify-between items-center px-4 md:px-16 py-4 bg-white/10 backdrop-blur-md fixed top-0 w-full z-10 shadow-md' :
+    'flex justify-between items-center px-4 md:px-16 py-4 bg-white/10 backdrop-blur-md w-full shadow-md'">
+    
+    <div class="text-xl md:text-2xl font-extrabold flex items-center gap-2">
+      <svg class="w-7 h-7 md:w-8 md:h-8 text-white animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M9 18v1a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-1M9 18H6a2 2 0 0 1-2-2v-5h16v5a2 2 0 0 1-2 2h-3M9 18V9a3 3 0 0 1 6 0v9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9" cy="13" r="1" fill="currentColor"/>
+        <circle cx="15" cy="13" r="1" fill="currentColor"/>
+      </svg>
+      <span>ITBuddy</span>
+    </div>
+
+    <ul class="hidden md:flex space-x-8 text-lg font-medium">
+      <li><a th:href="@{/#home}" class="hover:text-gray-300 transition">Home</a></li>
+      <li><a th:href="@{/#features}" class="hover:text-gray-300 transition">Features</a></li>
+      <li><a th:href="@{/#about}" class="hover:text-gray-300 transition">About</a></li>
+      <li><a th:href="@{/#contact}" class="hover:text-gray-300 transition">Contact</a></li>
+      <li><a th:href="@{/MbtiDescription}" class="hover:text-gray-300 transition">MBTI Description</a></li>
+    </ul>
+
+    <button id="openLogin" class="hidden md:block border border-white px-4 py-1 rounded hover:bg-white hover:text-black transition">Login</button>
+    <button id="openLoginMobile" class="md:hidden text-sm border px-3 py-1 rounded hover:bg-white hover:text-black transition">Login</button>
+  </nav>
+</div>
+

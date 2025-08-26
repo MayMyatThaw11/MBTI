@@ -1,3 +1,174 @@
+// package com.example.mbti.controller;
+
+// import com.example.mbti.model.*;
+// import com.example.mbti.repository.*;
+// import com.example.mbti.service.MBTIService;
+// import org.springframework.stereotype.Controller;
+// import org.springframework.ui.Model;
+// import org.springframework.util.MultiValueMap;
+// import org.springframework.web.bind.annotation.*;
+// import org.springframework.web.bind.support.SessionStatus;
+
+// import java.time.LocalDateTime;
+// import java.util.*;
+
+// @Controller
+// @RequestMapping("/questions")
+// @SessionAttributes("mbtiAnswers")
+// public class QuestionnaireController {
+
+//     private final MBTIQuestionRepository mbtiQuestionRepository;
+//     private final MBTIService mbtiService;
+//     private final UserRepository userRepository;
+//     private final MbtiTypeRepository mbtiTypeRepository;
+//     private final QuestionRepository questionRepository;
+//     private final SectionRepository sectionRepository;
+//     private final OptionRepository optionRepository;
+//     private final UserAnswerRepository userAnswerRepository;
+
+//     public QuestionnaireController(
+//             MBTIQuestionRepository mbtiQuestionRepository,
+//             MBTIService mbtiService,
+//             UserRepository userRepository,
+//             MbtiTypeRepository mbtiTypeRepository,
+//             QuestionRepository questionRepository,
+//             SectionRepository sectionRepository,
+//             OptionRepository optionRepository,
+//             UserAnswerRepository userAnswerRepository
+//     ) {
+//         this.mbtiQuestionRepository = mbtiQuestionRepository;
+//         this.mbtiService = mbtiService;
+//         this.userRepository = userRepository;
+//         this.mbtiTypeRepository = mbtiTypeRepository;
+//         this.questionRepository = questionRepository;
+//         this.sectionRepository = sectionRepository;
+//         this.optionRepository = optionRepository;
+//         this.userAnswerRepository = userAnswerRepository;
+//     }
+
+//     @ModelAttribute("oppositeMap")
+//     public Map<String, String> getOppositeMap() {
+//         return Map.of(
+//                 "E", "I", "I", "E",
+//                 "S", "N", "N", "S",
+//                 "T", "F", "F", "T",
+//                 "J", "P", "P", "J");
+//     }
+
+//     @GetMapping("/mbti")
+//     public String showMbtiQuestions(Model model) {
+//         List<MBTIQuestions> questions = mbtiQuestionRepository.findAll();
+//         if (questions.isEmpty()) {
+//             model.addAttribute("error", "No MBTI questions available.");
+//             return "error";
+//         }
+//         Collections.shuffle(questions);
+//         model.addAttribute("questions", questions);
+//         return "mbti-questions";
+//     }
+
+//     @PostMapping("/mbti/submit")
+//     public String submitMbtiAnswers(@RequestParam Map<String, String> answers, Model model) {
+//         List<MBTIQuestions> allQuestions = mbtiQuestionRepository.findAll();
+//         if (answers.size() < allQuestions.size()) {
+//             model.addAttribute("error", "Please answer all MBTI questions.");
+//             model.addAttribute("questions", allQuestions);
+//             return "mbti-questions";
+//         }
+
+//         model.addAttribute("mbtiAnswers", answers);
+//         String mbtiTypeString = mbtiService.calculateMbti(answers);
+
+//         Optional<MbtiType> mbtiOpt = mbtiTypeRepository.findByCode(mbtiTypeString);
+//         if (mbtiOpt.isEmpty()) {
+//             model.addAttribute("error", "Invalid MBTI type calculated: " + mbtiTypeString);
+//             model.addAttribute("questions", allQuestions);
+//             return "mbti-questions";
+//         }
+
+//         User user = userRepository.findById(1)
+//                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+//         MbtiType mbti = mbtiOpt.get();
+//         user.setMbtiType(mbti);
+//         user.setCompletedAt(LocalDateTime.now());
+//         userRepository.save(user);
+
+//         return "redirect:/questions/custom";
+//     }
+
+//     @GetMapping("/custom")
+//     public String showCustomQuestions(Model model) {
+//         model.addAttribute("sections", sectionRepository.findAll());
+//         model.addAttribute("questions", questionRepository.findAll());
+//         model.addAttribute("options", optionRepository.findAll());
+//         model.addAttribute("defaultOptions", List.of(
+//                 "Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"));
+//         return "iquestions";
+//     }
+
+//     @PostMapping("/custom/submit")
+//     public String submitCustomAnswers(
+//             @RequestParam MultiValueMap<String, String> customAnswersRaw,
+//             @SessionAttribute(name = "mbtiAnswers", required = false) Map<String, String> mbtiAnswers,
+//             Model model,
+//             SessionStatus sessionStatus) {
+
+//         System.out.println("This is custom answer");
+
+//         User user = userRepository.findById(1)
+//                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+//         System.out.println("User ID: " + user.getId());
+
+//         // List<Question> allQuestions = questionRepository.findAll();
+//         // boolean hasMissingAnswers = allQuestions.stream()
+//         //         .anyMatch(q -> {
+//         //             String key = "q" + q.getQuestionId(); // to show again
+//         //             List<String> answers = customAnswersRaw.get(key);
+//         //             return answers == null || answers.isEmpty();
+//         //         });
+//         System.out.println("This is in custom ansewer");
+
+//         // if (hasMissingAnswers) {
+//         //     model.addAttribute("error", "Please complete all questions.");
+//         //     model.addAttribute("sections", sectionRepository.findAll());
+//         //     model.addAttribute("questions", allQuestions);
+//         //     model.addAttribute("options", optionRepository.findAll());
+//         //     model.addAttribute("defaultOptions", List.of(
+//         //             "Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"));
+//         //     model.addAttribute("previousAnswers", customAnswersRaw);
+//         //     //return "iquestions";
+//         // }
+//         System.out.println("In the middle");
+
+//         customAnswersRaw.forEach((key, values) -> {
+//             if (values == null || values.isEmpty()) return;
+
+//             String questionNumber = key.replaceAll("\\D", "");
+//             if (questionNumber.isEmpty()) return;
+
+//             Question question = questionRepository.findById(Integer.parseInt(questionNumber))
+//                     .orElseThrow(() -> new RuntimeException("Question not found: " + key));
+
+//             for (String val : values) {
+//                 UserAnswer ua = new UserAnswer();
+//                 ua.setUserId(user.getId());
+//                 ua.setQuestionText(question.getQuestionText());
+//                 ua.setOptionText(val);
+//                 ua.setAnsweredAt(LocalDateTime.now());
+//                 userAnswerRepository.save(ua);
+//             }
+//         });
+//         System.out.print("Before Finish");
+
+//         sessionStatus.setComplete();
+//         System.out.print("User ID id: " +user.getId());
+//         return "redirect:/useranswer/" + user.getId();
+//     }
+// }
+
+
 package com.example.mbti.controller;
 
 import com.example.mbti.model.*;
@@ -15,7 +186,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/questionnaire")
+@RequestMapping("/questions")
 @SessionAttributes("mbtiAnswers") // store MBTI answers temporarily
 public class QuestionnaireController {
 
@@ -97,7 +268,7 @@ public class QuestionnaireController {
         userRepository.save(user);
 
         // Redirect to custom questionnaire
-        return "redirect:/questionnaire/custom";
+        return "redirect:/questions/custom";
     }
 
     // Step 3: Show Custom Questionnaire
@@ -166,7 +337,7 @@ public String submitCustomAnswers(
     String mbtiTypeString = user.getMbtiType() != null ? user.getMbtiType().getCode() : "Unknown";
 
     // Recommended careers
-    List<String> recommendedCareers = mbtiService.recommendCareers(mbtiTypeString);
+    //List<String> recommendedCareers = mbtiService.recommendCareers(mbtiTypeString);
 
     // Add attributes for result page
     // model.addAttribute("user", user);

@@ -9,7 +9,7 @@ public class MbtiCareerMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Integer id;
 
     @ManyToOne
     @JoinColumn(name = "mbti_type_id", nullable = false)
@@ -28,11 +28,11 @@ public class MbtiCareerMapping {
     }
 
     // Getters and setters
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

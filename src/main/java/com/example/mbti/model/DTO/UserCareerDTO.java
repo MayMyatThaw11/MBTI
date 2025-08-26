@@ -3,12 +3,14 @@ package com.example.mbti.model.DTO;
 import java.util.List;
 import com.example.mbti.model.Career;
 import com.example.mbti.model.CourseRecommendation;
+import com.example.mbti.model.MbtiType;
 
 public class UserCareerDTO {
 
     private Career career;
     private Double score;
     private List<CourseRecommendation> courses;
+    private MbtiType mbtiType;
 
     // Getter and Setter for career
     public Career getCareer() {
@@ -32,6 +34,14 @@ public class UserCareerDTO {
     }
     public void setCourses(List<CourseRecommendation> courses) {
         this.courses = courses;
+    }
+    // Getter and Setter for mbtiType
+    public MbtiType getMbtiType() {
+        return mbtiType;
+    }
+
+    public void setMbtiType(MbtiType mbtiType) {
+        this.mbtiType = mbtiType;
     }
 
     @Override

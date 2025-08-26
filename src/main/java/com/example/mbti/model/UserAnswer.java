@@ -9,7 +9,7 @@ public class UserAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long responseId;
+    private Integer responseId;
 
     @Column(nullable = false)
     private Integer userId;
@@ -25,11 +25,11 @@ public class UserAnswer {
 
     // Getters and Setters
 
-    public Long getResponseId() {
+    public Integer getResponseId() {
         return responseId;
     }
 
-    public void setResponseId(Long responseId) {
+    public void setResponseId(Integer responseId) {
         this.responseId = responseId;
     }
 

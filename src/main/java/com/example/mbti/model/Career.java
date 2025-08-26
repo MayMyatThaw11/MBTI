@@ -15,6 +15,7 @@ public class Career {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    
     // Constructors
     public Career() {}
 

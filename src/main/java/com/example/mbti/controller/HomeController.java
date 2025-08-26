@@ -6,13 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
+    
 
     @GetMapping("/")
     public String Home(Model model) {
         model.addAttribute("page", "home");
-        return "Home";  // Home.html
+        return "index";  // Home.html
     }
 
+    
     @GetMapping("/MbtiDescription")
     public String MbtiDescription(Model model) {
         model.addAttribute("page", "mbti");
@@ -24,4 +26,14 @@ public class HomeController {
         model.addAttribute("page", "feature");
         return "feature";  // feature.html
     }
+
+     @GetMapping("/about")
+    public String about(Model model) {
+        model.addAttribute("page", "about");
+        return "about";  // feature.html
+    }
+
+    
+
+    
 }

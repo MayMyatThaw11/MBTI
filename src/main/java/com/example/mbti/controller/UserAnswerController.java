@@ -98,6 +98,13 @@ public String getAnswersWithRecommendations(@PathVariable Integer userId,
     for (CareerRecommendation rec : recommendations) {
         rec.setUserId(userId);
     }
+    // if there are existing recommendations for the user, delete them
+    List<CareerRecommendation> existingRecs = recommendationRepository.findByUserId(userId);
+    if (!existingRecs.isEmpty()) {
+        recommendationRepository.deleteAll(existingRecs);
+        System.out.println("Deleted existing recommendations for userId: " + userId);
+    }
+
     recommendationRepository.saveAll(recommendations);
 
     // Redirect to the user recommendations page

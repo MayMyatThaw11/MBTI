@@ -2,12 +2,16 @@ package com.example.mbti.controller;
 
 import com.example.mbti.model.*;
 import com.example.mbti.repository.*;
+import com.example.mbti.service.CustomUserDetailsService;
 import com.example.mbti.service.MBTIService;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -74,7 +78,7 @@ public class QuestionnaireController {
 
     // Step 2: Submit MBTI Answers and go to Custom Questionnaire
     @PostMapping("/mbti/submit")
-    public String submitMbtiAnswers(@RequestParam Map<String, String> answers, Model model) {
+    public String submitMbtiAnswers(@RequestParam Map<String, String> answers, Model model,HttpSession session) {
         System.out.println("MBTI Answers: " + answers);
         // Store MBTI answers in session
         model.addAttribute("mbtiAnswers", answers);
@@ -82,16 +86,17 @@ public class QuestionnaireController {
         String mbtiTypeString = mbtiService.calculateMbti(answers);
         System.out.println("Calculated MBTI Type: " + mbtiTypeString);
         // Store MBTI type in model
-        User user = userRepository.findById((int) 1L)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println("User found: " + user.getUsername());
+        User user = (User) session.getAttribute("currentUser");
+        if (user == null) {
+                throw new RuntimeException("No logged-in user found in session");
+        }
         // Fetch MBTI type from repository
         mbtiTypeRepository.findAll().forEach(mbtiType -> {
             System.out.println("MBTI Type: " + mbtiType.getCode());
         });
         MbtiType mbti = mbtiTypeRepository.findByCode(mbtiTypeString)
-                .orElseThrow(() -> new RuntimeException("MBTI type not found: " + mbtiTypeString));
-        System.out.println("MBTI Type found: " + mbti.getCode());
+        .orElseThrow(() -> new RuntimeException("MBTI type not found: " + mbtiTypeString));
+
         user.setMbtiType(mbti);
         user.setCompletedAt(LocalDateTime.now());
         userRepository.save(user);
@@ -127,16 +132,18 @@ public class QuestionnaireController {
 
 @PostMapping("/custom/submit")
 public String submitCustomAnswers(
-        @RequestParam MultiValueMap<String, String> customAnswersRaw, // <- use String, not String[]
+        @RequestParam MultiValueMap<String, String> customAnswersRaw,
         @SessionAttribute(name = "mbtiAnswers", required = false) Map<String, String> mbtiAnswers,
         Model model,
-        SessionStatus sessionStatus) {
+        HttpSession session, SessionStatus sessionStatus) {
 
     System.out.println("Custom Answers: " + customAnswersRaw);
 
     // Fetch user (replace with real logged-in user logic)
-    User user = userRepository.findById(1)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+     User user = (User) session.getAttribute("currentUser");
+        if (user == null) {
+                throw new RuntimeException("No logged-in user found in session");
+        }
 
     customAnswersRaw.forEach((key, values) -> {
         if (values == null || values.isEmpty()) return;

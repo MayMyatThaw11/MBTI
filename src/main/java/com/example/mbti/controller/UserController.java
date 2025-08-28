@@ -92,4 +92,12 @@ public String registerUser(User user, Model model) {
         model.addAttribute("error", "Invalid email or password");
         return "login";
     }
+
+    @GetMapping("/logout")
+public String logout(HttpSession session) {
+    session.invalidate();
+    SecurityContextHolder.clearContext();
+    return "redirect:/";
+}
+
 }

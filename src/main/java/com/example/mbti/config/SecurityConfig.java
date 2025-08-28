@@ -14,7 +14,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/MbtiDescription", "/feature", "/about").permitAll() // ✅ Public routes
+                        .requestMatchers("/", "/MbtiDescription", "/feature", "/about").permitAll() 
                         .requestMatchers("/auth/**").permitAll() // ✅ Login/Register
                         .requestMatchers("/questions/mbti","questions/custom" ).authenticated() // 🔐 Protected route
                         .anyRequest().permitAll())

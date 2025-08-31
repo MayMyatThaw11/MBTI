@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITBuddy - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" th:href="@{/css/main.css}"></head>
+<body class="text-white">
+
+  <!-- Navigation Bar -->
+  <div th:replace="fragments/navbar :: navbar"></div>
+
+  <!-- Hero Section -->
+  <div th:replace="sections/hero :: hero"></div>
+
+  <!-- Features Section -->
+  <div th:replace="sections/features :: features"></div>
+
+  <!-- About Section -->
+  <!-- <div th:replace="sections/about :: about"></div> -->
+
+  <!-- Contact Section -->
+  <div th:replace="sections/contact :: contact"></div>
+
+  <!-- Login Modal -->
+  <div th:replace="modals/login :: login"></div>
+
+  <!-- Register Modal -->
+  <div th:replace="modals/register :: register"></div>
+
+  <!-- Footer -->
+  <div th:replace="fragments/footer :: footer"></div>
+
+  <script src="/js/blobs.js"></script>
+  <script src="/js/modals.js"></script>
+</body>
+</html>

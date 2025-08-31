@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MBTI Questionnaire</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Base circle style */
+.circle {
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Sizes (scaled down) */
+.circle[data-value="5"] { width: 45px; height: 45px; } /* Strongly Agree */
+.circle[data-value="4"] { width: 38px; height: 38px; } /* Agree */
+.circle[data-value="3"] { width: 30px; height: 30px; } /* Neutral */
+.circle[data-value="2"] { width: 38px; height: 38px; } /* Disagree */
+.circle[data-value="1"] { width: 45px; height: 45px; } /* Strongly Disagree *
+
+    /* Hover (temporary checkmark + background) */
+.circle:hover::after {
+  content: "✔";
+  font-size: 16px;   /* scaled down to match size */
+  color: #fffefe;
+}
+.circle.agree-border:hover { background-color: #06a751; }
+.circle.neutral-border:hover { background-color: #666; }
+.circle.disagree-border:hover { background-color: #ff1212; }
+
+/* Active state */
+.circle.active { color: #fff; }
+.circle.active.agree-border { background: #06a751; }
+.circle.active.neutral-border { background: #666; }
+.circle.active.disagree-border { background: #ff1212; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center p-6">
+
+  <div class="max-w-4xl w-full bg-white rounded-xl shadow-lg p-8">
+    <header class="mb-10 text-center">
+      <h1 class="text-4xl font-extrabold text-indigo-600 mb-1">MBTI Personality Questionnaire</h1>
+      <p class="text-gray-500 text-sm">Answer all questions honestly to get your MBTI type.</p>
+    </header>
+
+    <form th:action="@{/questions/mbti/submit}" method="post" class="space-y-8">
+
+      <!-- Loop questions -->
+      <div th:each="question : ${questions}" class="bg-indigo-50 p-6 rounded-lg shadow-sm space-y-4">
+        <p class="text-lg font-semibold text-gray-800" th:text="${question.text}">Question text</p>
+
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <span class="text-sm font-medium text-green-700">Agree</span>
+
+          <!-- hidden radios -->
+          <input type="radio" th:name="${question.id}" value="5" hidden>
+          <input type="radio" th:name="${question.id}" value="4" hidden>
+          <input type="radio" th:name="${question.id}" value="3" hidden>
+          <input type="radio" th:name="${question.id}" value="2" hidden>
+          <input type="radio" th:name="${question.id}" value="1" hidden>
+
+          <!-- circle radios with different sizes -->
+          <div class="circle agree-border size-strong" data-value="5"></div>
+          <div class="circle agree-border size-large" data-value="4"></div>
+          <div class="circle neutral-border size-medium" data-value="3"></div>
+          <div class="circle disagree-border size-large" data-value="2"></div>
+          <div class="circle disagree-border size-strong" data-value="1"></div>
+
+          <span class="text-sm font-medium text-purple-700">Disagree</span>
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <div class="flex justify-center pt-6">
+        <button type="submit"
+          class="px-10 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.querySelectorAll("form .flex").forEach(group => {
+      const circles = group.querySelectorAll(".circle");
+      const radios = group.querySelectorAll("input[type=radio]");
+      circles.forEach(circle => {
+        circle.addEventListener("click", () => {
+          circles.forEach(c => c.classList.remove("active"));
+          circle.classList.add("active");
+          const value = circle.getAttribute("data-value");
+          radios.forEach(r => r.checked = (r.value === value));
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

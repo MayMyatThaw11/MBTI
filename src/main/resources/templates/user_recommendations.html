@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Career Recommendations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .hero-bg {
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(79,70,229,0.25), transparent 60%),
+                  radial-gradient(800px 500px at 90% 20%, rgba(16,185,129,0.25), transparent 60%),
+                  linear-gradient(135deg, #0f172a, #1f2937 40%, #111827);
+    }
+
+  </style>
+  
+</head>
+
+<body >
+   <div th:replace="fragments/navbar :: navbar"></div>
+
+  <div class="hero-bg min-h-screen text-slate-100 p-6">
+
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-semibold text-center mb-8">User Career Recommendations</h1>
+
+    <div class="bg-slate-900 rounded-xl p-6 mb-8 shadow-lg">
+
+
+  <p class="text-lg"><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+  <p class="text-lg"><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+
+  <h2 class="text-2xl font-semibold mt-6 mb-4">MBTI Type Information</h2>
+  <p class="text-lg"><strong>MBTI Code:</strong> <span th:text="${mbtiType.Code}"></span></p>
+  <p class="text-lg"><strong>Key Traits:</strong> <span th:text="${mbtiType.keyTraits}"></span></p>
+  <p class="text-lg"><strong>Description:</strong> <span th:text="${mbtiType.description}"></span></p>
+  <p class="text-lg"><strong>Strengths:</strong> <span th:text="${mbtiType.strengths}"></span></p>
+  <p class="text-lg"><strong>Weaknesses:</strong> <span th:text="${mbtiType.weaknesses}"></span></p>
+
+</div>
+
+    <div th:each="dto : ${userCareers}" class="relative bg-slate-800 rounded-xl p-6 mb-6 overflow-hidden">
+      <!-- Gradient Border -->
+      <div class="absolute inset-0 rounded-xl p-[1px] pointer-events-none"
+           style="background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(16,185,129,0.85));
+                  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+                  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+                  -webkit-mask-composite: xor; mask-composite: exclude;">
+      </div>
+
+      <h2 class="text-xl font-semibold mb-2" th:text="${dto.career.title}">Career Title</h2>
+      <p class="mb-4">Score: <span class="font-bold" th:text="${dto.score}">0.0</span></p>
+      <p class="text-lg"><strong>Description:</strong></p>   <p class="mb-2" th:text="${dto.career.description}">Career Description</p>
+
+      <p class="text-lg"><strong>Courses :</strong></p>
+      <ul class="space-y-2">
+        <li th:each="course : ${dto.courses}">
+          <a th:href="${course.url}" target="_blank"
+             class="text-indigo-300 hover:underline font-medium"
+             th:text="${course.courseName}">Course Name</a>
+          <span class="text-sm text-slate-400" th:text="' (' + ${course.platform} + ')'"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</body>
+</html>

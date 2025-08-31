@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Questions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fade + slide animation for sections */
+    .section-block {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      opacity: 0;
+      transform: translateX(30px);
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+    }
+
+    .section-block.active {
+      opacity: 1;
+      transform: translateX(0);
+      position: relative;
+      pointer-events: auto;
+    }
+
+    /* Radio buttons inline (for section 1 checkboxes only) */
+    .radio-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Navigation buttons */
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* -------------------- CUSTOM CIRCLE RADIO STYLE -------------------- */
+    .circle {
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    /* Sizes */
+    .circle[data-value="5"] {
+      width: 45px;
+      height: 45px;
+    }
+
+    .circle[data-value="4"] {
+      width: 38px;
+      height: 38px;
+    }
+
+    .circle[data-value="3"] {
+      width: 30px;
+      height: 30px;
+    }
+
+    .circle[data-value="2"] {
+      width: 38px;
+      height: 38px;
+    }
+
+    .circle[data-value="1"] {
+      width: 45px;
+      height: 45px;
+    }
+
+    /* Hover (temporary checkmark + background) */
+    .circle:hover::after {
+      content: "✔";
+      font-size: 16px;
+      color: #ffffff;
+    }
+
+    .circle.agree-border:hover {
+      background-color: #54ff9e;
+    }
+
+    .circle.neutral-border:hover {
+      background-color: #666;
+    }
+
+    .circle.disagree-border:hover {
+      background-color: #ff4069;
+    }
+
+    /* Active (clicked) state */
+    .circle.active {
+      color:#ffffff;
+    }
+
+    .circle.active.agree-border {
+      background: #4dff9a;
+    }
+
+    .circle.active.neutral-border {
+      background: #666;
+    }
+
+    .circle.active.disagree-border {
+      background: #ff5c5c;
+    }
+    
+    /* Checkbox styling */
+    .checkbox-label.checked {
+      background-color: #c7d2fe;
+      border-color: #43efa1;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center p-6">
+
+  <div class="max-w-4xl w-full bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
+    <header class="mb-10 text-center">
+      <h1 class="text-4xl font-extrabold text-indigo-600 mb-1">Complete the Questionnaire</h1>
+      <p class="text-gray-500 text-sm">Please answer all the questions below to the best of your ability.</p>
+    </header>
+
+    <form method="post" th:action="@{/questions/custom/submit}" class="space-y-10 relative min-h-[350px]">
+
+      <!-- Progress dots -->
+      <div class="flex justify-center space-x-4 mb-8">
+        <template th:each="section, secStat : ${sections}">
+          <button type="button" th:data-index="${secStat.index}"
+            class="w-4 h-4 rounded-full bg-gray-300 hover:bg-indigo-400 transition-colors duration-300"
+            aria-label="Section [[${secStat.index + 1}]]">
+          </button>
+        </template>
+      </div>
+
+      <!-- iterate sections -->
+      <div th:each="section, secStat : ${sections}"
+        class="section-block rounded-lg p-6 border border-gray-200 shadow-sm bg-white"
+        th:classappend="${secStat.index == 0} ? 'active' : ''" th:attr="data-index=${secStat.index}">
+
+        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
+          <div>
+            <h2 class="text-3xl font-semibold text-indigo-600" th:text="${section.sectionName}">Section name</h2>
+            <p class="text-gray-500 mt-1" th:text="${section.description}">Section description</p>
+          </div>
+          <div class="text-gray-400 font-mono text-lg font-semibold tracking-wide">
+            Section <span th:text="${section.sectionId}">1</span>
+          </div>
+        </div>
+
+        <div class="space-y-8">
+          <!-- iterate questions inside each section -->
+          <div th:each="question : ${section.questions}">
+            <p class="font-semibold text-lg mb-3" th:text="${question.questionText}">Question text</p>
+
+            <!-- SECTION 1: checkboxes -->
+            <div th:if="${section.sectionId == 1}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <label th:each="option : ${question.options}" th:class="'checkbox-label flex items-center space-x-3 bg-indigo-50 rounded-md p-3 cursor-pointer hover:bg-indigo-100 transition' + (${option.optionText == 'None'} ? ' none-option' : '')">
+                <input type="checkbox" th:name="${'q_' + question.questionId + '[]'}" th:value="${option.optionText}"
+                  class="form-checkbox h-5 w-5 text-indigo-600 section1-checkbox" 
+                  th:data-is-none="${option.optionText == 'None'}" />
+                <span th:text="${option.optionText}" class="text-md"></span>
+              </label>
+            </div>
+
+            <!-- SECTION 2 & 3: circle radios -->
+            <div th:if="${section.sectionId != 1}" class="flex items-center justify-center gap-4 flex-wrap">
+
+              <span class="text-sm font-medium text-green-700">Agree</span>
+
+              <!-- hidden radios -->
+              <input type="radio" th:name="${'q_' + question.questionId}" value="5" hidden>
+              <input type="radio" th:name="${'q_' + question.questionId}" value="4" hidden>
+              <input type="radio" th:name="${'q_' + question.questionId}" value="3" hidden>
+              <input type="radio" th:name="${'q_' + question.questionId}" value="2" hidden>
+              <input type="radio" th:name="${'q_' + question.questionId}" value="1" hidden>
+
+              <!-- circle radios -->
+              <div class="circle agree-border" data-value="5"></div>
+              <div class="circle agree-border" data-value="4"></div>
+              <div class="circle neutral-border" data-value="3"></div>
+              <div class="circle disagree-border" data-value="2"></div>
+              <div class="circle disagree-border" data-value="1"></div>
+
+              <span class="text-sm font-medium text-purple-700">Disagree</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="flex justify-between mt-10">
+          <button type="button"
+            class="px-6 py-3 bg-gray-300 rounded-lg hover:bg-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed prev-btn">
+            Previous
+          </button>
+          <button type="button"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed next-btn">
+            Next
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Final submit button -->
+      <div id="submit-container" class="flex justify-center mt-8 " style="display: none;">
+        <button type="submit"
+          class=" w-80 px-7 py-3 bg-indigo-500  text-white rounded-lg shadow-lg hover:bg-indigo-700 transition">
+          Submit
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('.section-block');
+      const submitContainer = document.getElementById('submit-container');
+      const progressDots = document.querySelectorAll('form > div.flex.justify-center > button');
+      let currentSection = 0;
+
+      function showSection(index) {
+        sections.forEach((sec, i) => {
+          if (i === index) {
+            sec.classList.add('active');
+          } else {
+            sec.classList.remove('active');
+          }
+        });
+
+        // Show/hide submit button
+        submitContainer.style.display = (index === sections.length - 1) ? 'flex' : 'none';
+
+        // Update progress dots styling
+        progressDots.forEach((dot, i) => {
+          dot.classList.toggle('bg-indigo-600', i === index);
+          dot.classList.toggle('bg-gray-300', i !== index);
+        });
+
+        // Disable prev/next buttons conditionally
+        sections.forEach((sec, i) => {
+          const prevBtn = sec.querySelector('.prev-btn');
+          const nextBtn = sec.querySelector('.next-btn');
+          if (i === index) {
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === sections.length - 1;
+          }
+        });
+      }
+
+      // Add listeners to prev/next buttons and progress dots
+      sections.forEach((sec, i) => {
+        const prevBtn = sec.querySelector('.prev-btn');
+        const nextBtn = sec.querySelector('.next-btn');
+
+        prevBtn.addEventListener('click', () => {
+          if (currentSection > 0) {
+            currentSection--;
+            showSection(currentSection);
+          }
+        });
+
+        nextBtn.addEventListener('click', () => {
+          if (currentSection < sections.length - 1) {
+            currentSection++;
+            showSection(currentSection);
+          }
+        });
+      });
+
+      // Progress dots click
+      progressDots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          currentSection = i;
+          showSection(i);
+        });
+      });
+
+      // Initialize
+      showSection(currentSection);
+
+      // ---------------- Circle Radio Sync ----------------
+      document.querySelectorAll('.circle').forEach(circle => {
+        circle.addEventListener('click', function() {
+          const value = this.dataset.value;
+          // Find the question container that holds both circles and radios
+          const questionContainer = this.closest('.flex.items-center.justify-center');
+          
+          // Select the correct hidden radio button
+          const radio = questionContainer.querySelector(`input[value="${value}"]`);
+          if (radio) {
+            radio.checked = true;
+            
+            // Reset actives in this question group only
+            questionContainer.querySelectorAll('.circle').forEach(c => c.classList.remove('active'));
+            
+            // Set current active
+            this.classList.add('active');
+          }
+        });
+      });
+
+      // ---------------- Checkbox None/Others Logic ----------------
+      document.querySelectorAll('.section1-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          const isNone = this.getAttribute('data-is-none') === 'true';
+          const questionContainer = this.closest('.grid');
+          const label = this.closest('.checkbox-label');
+          
+          // Toggle visual state
+          if (this.checked) {
+            label.classList.add('checked');
+          } else {
+            label.classList.remove('checked');
+          }
+          
+          if (isNone) {
+            // If "None" is checked, uncheck all other checkboxes
+            if (this.checked) {
+              questionContainer.querySelectorAll('.section1-checkbox').forEach(cb => {
+                if (cb !== this && cb.getAttribute('data-is-none') !== 'true') {
+                  cb.checked = false;
+                  cb.closest('.checkbox-label').classList.remove('checked');
+                }
+              });
+            }
+          } else {
+            // If any other checkbox is checked, uncheck "None"
+            if (this.checked) {
+              const noneCheckbox = questionContainer.querySelector('.section1-checkbox[data-is-none="true"]');
+              if (noneCheckbox) {
+                noneCheckbox.checked = false;
+                noneCheckbox.closest('.checkbox-label').classList.remove('checked');
+              }
+            }
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>

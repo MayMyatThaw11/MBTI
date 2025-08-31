@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Answers & Recommendations</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+    <h2>
+        User: <span th:text="${user.name}"></span>
+        (MBTI: <span th:text="${user.mbtiType != null ? user.mbtiType.code : 'N/A'}"></span>)
+    </h2>
+
+    <h3>Answers</h3>
+    <ul>
+        <li th:each="ans : ${answers}">
+            <strong th:text="${ans['questionText']} ?: 'No question'"></strong> →
+            <span th:text="${ans['optionText']} ?: 'No answer'"></span>
+        </li>
+    </ul>
+
+    <h3>Recommendations</h3>
+    <ul>
+        <li th:each="rec : ${recommendations}">
+            <span th:text="${rec.career} ?: 'Unknown career'"></span>
+            (Score: <span th:text="${rec.score}"></span>)
+        </li>
+    </ul>
+</body>
+</html>

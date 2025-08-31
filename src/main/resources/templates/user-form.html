@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create User</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-purple-800 to-indigo-900 min-h-screen flex items-center justify-center relative overflow-hidden">
+
+  <!-- Stars background (optional) -->
+  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+
+  <div class="relative z-10 bg-white/10 backdrop-blur-md rounded-xl p-8 w-full max-w-md shadow-2xl border border-white/20">
+    <h1 class="text-3xl font-semibold text-white text-center mb-6">Create New User</h1>
+    <form th:action="@{/users/save}" th:object="${user}" method="post" class="space-y-5">
+      <div>
+        <label class="block text-white mb-1">Username</label>
+        <div class="relative">
+          <input
+            type="text"
+            th:field="*{username}"
+            class="w-full bg-white/20 text-white placeholder-gray-200 border border-white/30 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            placeholder="Enter username"
+          />
+          <div class="absolute right-3 top-2.5 text-white">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-white mb-1">Email</label>
+        <div class="relative">
+          <input
+            type="email"
+            th:field="*{email}"
+            class="w-full bg-white/20 text-white placeholder-gray-200 border border-white/30 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            placeholder="Enter email"
+          />
+          <div class="absolute right-3 top-2.5 text-white">
+            <i class="fas fa-envelope"></i>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-white mb-1">Password</label>
+        <div class="relative">
+          <input
+            type="password"
+            th:field="*{passwordHash}"
+            class="w-full bg-white/20 text-white placeholder-gray-200 border border-white/30 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            placeholder="Enter password"
+          />
+          <div class="absolute right-3 top-2.5 text-white">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between text-sm text-white">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" class="accent-purple-500">
+          Remember me
+        </label>
+       <!--<a href="#" class="hover:underline">Forgot Password?</a>--> 
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-white text-purple-700 font-semibold py-2 rounded-full hover:bg-purple-100 transition"
+      >
+        Save
+      </button>
+
+      <p class="text-center text-white text-sm mt-4">
+        Already have an account?
+        <a href="#" class="font-semibold hover:underline">Login</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- Font Awesome for icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>

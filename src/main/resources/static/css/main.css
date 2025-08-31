@@ -1,0 +1,51 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: 
+    radial-gradient(1200px 600px at 10% 10%, rgba(79,70,229,0.25), transparent 60%),
+    radial-gradient(800px 500px at 90% 20%, rgba(16,185,129,0.25), transparent 60%),
+    linear-gradient(135deg, #0f172a, #1f2937 40%, #111827);
+  background-attachment: fixed;
+  animation: gradientMove 20s ease infinite;
+  padding-top: 96px; /* space for navbar */
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+  50% { background-position: 20% 10%, 80% 30%, 10% 10%; }
+  100% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  animation: blobMove linear infinite;
+  z-index: -1;
+}
+
+@keyframes blobMove {
+  0% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-50px) translateX(50px) scale(1.2); }
+  100% { transform: translateY(0) translateX(0) scale(1); }
+}
+
+html { scroll-behavior: smooth; }
+
+/* Additional utility classes */
+.hover-lift {
+  transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+.backdrop-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

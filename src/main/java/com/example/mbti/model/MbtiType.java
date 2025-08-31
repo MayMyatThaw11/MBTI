@@ -8,7 +8,7 @@ public class MbtiType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(length = 4, nullable = false, unique = true)
     private String code;
@@ -19,22 +19,36 @@ public class MbtiType {
     @Lob
     private String description;
 
-    // No-args constructor
+    @Column(name = "key_traits", length = 255)
+    private String keyTraits;
+
+@Column(name = "strength", columnDefinition = "TEXT", nullable = false)
+    private String strengths;
+
+@Column(name = "weakness", columnDefinition = "TEXT", nullable = false)
+    private String weaknesses;
+
+    // Default constructor
     public MbtiType() {
     }
 
     // All-args constructor
-    public MbtiType(String code, String name, String description) {
+    public MbtiType(String code, String name, String description, 
+                    String keyTraits, String strengths, String weaknesses) {
         this.code = code;
         this.name = name;
         this.description = description;
+        this.keyTraits = keyTraits;
+        this.strengths = strengths;
+        this.weaknesses = weaknesses;
+
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -60,5 +74,29 @@ public class MbtiType {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getKeyTraits() {
+        return keyTraits;
+    }   
+
+    public void setKeyTraits(String keyTraits) {
+        this.keyTraits = keyTraits;
+    }
+
+    public String getStrengths() {
+        return strengths;
+    }
+
+    public void setStrengths(String strengths) {
+        this.strengths = strengths;
+    }
+
+    public String getWeaknesses() {
+        return weaknesses;
+    }
+
+    public void setWeaknesses(String weaknesses) {
+        this.weaknesses = weaknesses;
     }
 }

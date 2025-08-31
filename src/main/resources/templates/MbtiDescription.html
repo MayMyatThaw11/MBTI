@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+
+  <title>MBTI Types — Descriptions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root { --bg1: #0f172a; --bg2: #1e293b; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; }
+    /* Fancy gradient background */
+    .hero-bg {
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(79,70,229,0.25), transparent 60%),
+                  radial-gradient(800px 500px at 90% 20%, rgba(16,185,129,0.25), transparent 60%),
+                  linear-gradient(135deg, #0f172a, #1f2937 40%, #111827);
+    }
+   
+
+    /* Card gradient border */
+    .card-border { position: relative; }
+    .card-border::before {
+      content: ""; position: absolute; inset: 0; padding: 1px; border-radius: 1.25rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(16,185,129,0.85));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+    /* Tab underline animation */
+    .tab-btn[aria-selected="true"] { color: white; }
+    .tab-btn[aria-selected="true"]::after{
+      content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px; background: currentColor;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-white hero-bg">
+    <!-- Navbar (non-sticky) -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+     <!-- MBTI Description Link -->
+      <a th:href="@{/MbtiDescription}" class="text-white hover:text-indigo-400"></a>
+   <div class="pt-23.56px">
+
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 backdrop-blur bg-white/5 border-b border-white/10">
+    <!--<header class="sticky top-0 z-30 bg-indigo-900 text-white">-->
+
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center gap-4">
+        
+      <div class="flex items-center gap-3">
+        <svg class="w-8 h-8 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 0 0 0 13.5Zm0 0v3m0-20.25v3M3 12H.75M23.25 12H21M5.47 5.47 3.75 3.75m16.5 16.5-1.72-1.72m0-13.06 1.72-1.72M3.75 20.25l1.72-1.72"/>
+        </svg>
+        <div>
+          <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">MBTI Personality Types</h1>
+          <p class="text-white/60 text-sm">Quick descriptions • strengths • growth areas</p>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="ml-auto flex items-center gap-2 w-full md:w-auto">
+        <div class="relative flex-1 md:flex-none">
+          <input id="search" type="text" placeholder="Search by code, role, trait..." class="w-full md:w-80 pl-10 pr-3 py-2 rounded-xl bg-white/10 border border-white/10 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/60" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"/></svg>
+        </div>
+        <select id="sort" class="hidden md:block bg-white/10 border border-white/10 rounded-xl px-3 py-2 focus:outline-none">
+          <option value="code">Sort: Code (A→Z)</option>
+          <option value="role">Sort: Role (A→Z)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero blurb -->
+  <section class="max-w-7xl mx-auto px-4 md:px-8 mt-8 md:mt-12">
+    <div class="rounded-2xl p-6 md:p-8 bg-white/5 border border-white/10">
+      <p class="text-lg md:text-xl leading-relaxed text-white/80">
+        Explore all 16 MBTI personality types with concise, friendly descriptions. Use the search box to filter by
+        <span class="text-white">type code</span> (e.g., <span class="font-semibold">INTJ</span>),
+        <span class="text-white">role name</span> (e.g., <span class="font-semibold">Architect</span>), or any
+        <span class="text-white">keyword</span> (e.g., <span class="font-semibold">creative</span>, <span class="font-semibold">organized</span>).
+      </p>
+    </div>
+  </section>
+  </div>
+
+  <!-- Cards Grid -->
+  <main class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+    <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 py-10">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 text-center text-white/60">
+      Built with love for modern, readable MBTI insights. Tap a card to switch tabs.
+    </div>
+  </footer>
+
+  <script>
+    const TYPES = [
+      {
+        code: 'ISTJ', role: 'Logistician', traits: 'Responsible, practical, fact-minded',
+        overview: 'The ISTJ personality is built on a foundation of structure, facts, and responsibility. These individuals often approach life with a strong preference for routines and traditions, seeking to fulfill their duties with precision and honesty. Their commitment to order and clarity allows them to stay grounded and dependable, making them pillars of reliability in both personal and professional settings.',
+        strengths: 'ISTJs value honesty and directness, steering clear of lies or manipulative behavior. Their disciplined nature shines through in their patience and reliability, as they consistently keep their promises. Calm and practical under pressure, ISTJs make clear, logical decisions that others can trust. Their dedication to being straightforward and precise gives them a strong moral compass that guides their every action.',
+        growth: 'ISTJs are often "by the book," preferring clear rules and structure, which means they can feel stressed or uneasy when faced with unstructured or highly flexible situations. They have a strong respect for facts and evidence, sometimes leading them to judge or look down on those who ignore reality. Their blunt honesty, while rooted in integrity, can unintentionally hurt more sensitive individuals who might be less direct in their communication.'
+      },
+      {
+        code: 'ISFJ', role: 'Defender', traits: 'Protective, warm, reliable',
+        overview: 'The ISFJ personality type quietly dedicates themselves to the well-being of others, often choosing to work behind the scenes where their thoughtful and consistent actions provide care and support. They possess a strong sense of duty and are motivated by a desire to protect and nurture, creating environments where people feel safe and valued. This gentle approach makes them natural caregivers and loyal friends.',
+        strengths: 'ISFJs are highly observant, noticing the subtle details about others that help them understand their feelings and experiences. Their reliability is evident in the careful, steady way they work to ensure tasks are done completely and well. When passionate about a cause, ISFJs commit wholeheartedly, putting full effort into making a positive impact. Their enthusiasm, paired with a genuine concern for others, allows them to be a steady presence in any group.',
+        growth: 'Despite their many strengths, ISFJs often struggle with sharing their own opinions and taking credit for their contributions, tending to be overly humble. They are sensitive to criticism and may take negative feedback personally, which can hurt them deeply if they feel unappreciated. ISFJs also tend to repress their own feelings to avoid conflict, which can lead to misunderstandings and emotional buildup over time.'
+      },
+      {
+        code: 'INFJ', role: 'Advocate', traits: 'Insightful, creative, idealistic',
+        overview: 'INFJs seek deep meaning in both life and relationships, driven by a vision of a better world. They often navigate life quietly yet profoundly, striving to help others grow and flourish in meaningful ways. Their idealism and creativity empower them to see beyond the surface and grasp the true emotions and needs of the people around them. INFJs live with a passionate commitment to their values and the hope of making a positive difference.',
+        strengths: 'INFJs possess remarkable insightfulness, allowing them to understand what others truly feel and need beneath superficial appearances. Their passion for their goals is heartfelt, fueling their desire for a life filled with meaning rather than mere routine or comfort. Creative by nature, they enjoy expressing themselves through fresh, original ideas, often bringing unique perspectives to complex situations. Their depth of feeling and thoughtful nature inspires those fortunate enough to know them.',
+        growth: 'INFJs can be very sensitive to criticism, especially when it challenges their core beliefs, and may take negative feedback deeply to heart. Though honest, they tend to keep their struggles private, reluctant to open up in order not to burden others with their difficulties. They sometimes avoid the ordinary, everyday tasks necessary to achieve great things, which can create challenges in following through on their visionary ideas.'
+      },
+      {
+        code: 'INTJ', role: 'Architect', traits: 'Strategic, logical, innovative',
+        overview: 'INTJs are future-focused strategists who rely on logic and innovation to build detailed plans and systems. They trust their insights and research more than outside opinions, often formulating confident, well-founded views. Their curiosity drives them to explore new and unusual ideas, provided these are backed by evidence. They eagerly revise their thinking when presented with proof, viewing challenges as opportunities for growth.',
+        strengths: 'The strengths of INTJs lie in their rationality and informed decision-making. They excel at logical thinking and have a strong commitment to understanding facts deeply. Their curiosity fuels continuous learning, allowing them to refine their perspectives and adapt when necessary. This blend of strategic vision and intellectual rigor empowers them to develop smart, long-term solutions to complex problems.',
+        growth: 'Despite their strengths, INTJs can be seen as rigid in their adherence to logic and facts, occasionally overlooking emotional or social nuances. Their reliance on evidence might make them appear dismissive of less tangible ideas or feelings. They may struggle with flexibility when things don’t fit their structured approach, and their intensity can sometimes alienate others who don’t share their focused mindset.'
+      },
+      {
+        code: 'ISTP', role: 'Virtuoso', traits: 'Bold, practical, hands-on',
+        overview: 'ISTPs interact with the world through direct, practical experiences, often thriving on fixing, creating, or solving problems as they arise. Their hands-on approach means they prefer to figure things out in real time, embracing spontaneity and flexibility. Independent and resourceful, ISTPs enjoy working alone, where their creativity and problem-solving skills flourish.',
+        strengths: 'The hallmark strengths of ISTPs include their practical creativity and resourcefulness. They are handy and capable, using their skills to bring ideas to life effectively. Their spontaneous nature makes them quick thinkers, ready to act decisively in the moment. This combination of independence and hands-on ability allows them to tackle challenges with confidence and skill.',
+        growth: 'ISTPs may struggle with emotional sensitivity, often prioritizing logic over feelings, which can make them appear insensitive. Their private, reserved nature means they often keep to themselves and avoid sharing personal thoughts. At times, their independence may border on unapologetic disregard for others’ feelings or preferences, leading to misunderstandings or strained relationships.'
+      },
+      {
+        code: 'ISFP', role: 'Adventurer', traits: 'Gentle, artistic, flexible',
+        overview: 'ISFPs experience life deeply through their feelings and senses, often expressing themselves through art, music, or a connection to nature. They cherish freedom and flexibility, preferring to avoid strict structures or traditions. This gentle personality creates warmth and charm, making them well-liked and sensitive to others’ emotions. Their passion drives them to fully engage in what excites them, though they often do so quietly.',
+        strengths: 'ISFPs are charming and easygoing, naturally drawing others in with their warmth. They have a keen sensitivity to others\' feelings and excel at maintaining harmony. Their passion fuels their focused dedication to what inspires them, enabling them to immerse themselves fully in their creative pursuits and personal interests.',
+        growth: 'Though loving freedom, ISFPs may struggle with structure and long-term planning, sometimes feeling trapped or overwhelmed by rules and routines. Their unpredictability can cause challenges in relationships and financial stability. Under stress, they may withdraw or lose their usual calm and creativity, which can make difficult situations even harder to manage.'
+      },
+      {
+        code: 'INFP', role: 'Mediator', traits: 'Empathetic, idealistic, imaginative',
+        overview: 'INFPs navigate life guided by deep personal values and the search for meaning. They are imaginative and drawn to self-expression, often using their creativity to help others feel understood. Their idealism drives a strong desire to support others and share good fortune, ensuring that everyone’s voice is heard. This makes them deeply empathetic and generous with their emotions.',
+        strengths: 'The generosity of INFPs manifests in their desire to help and uplift others, along with their empathetic understanding of people’s emotions. Their creativity allows them to explore new ideas and unique perspectives, making them imaginative problem-solvers and dreamers. Their ability to connect emotionally with others fosters a supportive and caring environment around them.',
+        growth: 'INFPs sometimes have unrealistic expectations fueled by idealistic dreams that reality cannot always meet, which can lead to disappointment. Their imaginative nature may cause them to become unfocused or distracted, making it difficult to complete tasks. Emotionally vulnerable, they can become overwhelmed by feeling others’ emotions deeply if they don’t take care to protect themselves.'
+      },
+      {
+        code: 'INTP', role: 'Logician', traits: 'Analytical, curious, inventive',
+        overview: 'INTPs are analytical thinkers who dive deeply into systems, theories, and ideas in search of truth and understanding. They enjoy challenging assumptions and solving abstract problems on their own terms. Curious and open-minded, they are always eager to learn and explore new concepts, even if their interests shift frequently.',
+        strengths: 'The strengths of INTPs lie in their analytical minds, capable of noticing patterns and details that others miss. Their open-mindedness makes them willing to revise their views based on new evidence. This intellectual curiosity drives them to continually seek knowledge, pushing boundaries in thought and innovation.',
+        growth: 'INTPs may become impatient when others don’t grasp their ideas or seem uninterested, which can hinder communication. Their preference for logic over emotions might make them appear insensitive to social norms or feelings. Often dissatisfied, INTPs feel things could always be better, which may lead to a restless search for new problems rather than finishing existing projects.'
+      },
+      {
+        code: 'ESTP', role: 'Entrepreneur', traits: 'Energetic, perceptive, action-oriented',
+        overview: 'ESTPs live life as a series of exciting challenges and adventures. Energetic and bold, they enjoy taking risks and making quick decisions, thriving in the present moment. Their perceptiveness allows them to read situations quickly and act effectively, always seeking new opportunities to push limits and innovate practically.',
+        strengths: 'ESTPs are bold and energetic, constantly pushing boundaries and eager to try new things. Their originality enables them to mix practical ideas with boldness, often coming up with unique and effective solutions. They communicate clearly and directly, ensuring others understand exactly where they stand, which makes them natural leaders in dynamic environments.',
+        growth: 'ESTPs can be impulsive, sometimes acting without fully considering long-term consequences, driven by a need to avoid boredom. Their impatience makes it difficult to focus on slow or detailed tasks, and their focus on immediate problems may cause them to miss the bigger picture or longer-term goals.'
+      },
+      {
+        code: 'ESFP', role: 'Entertainer', traits: 'Playful, spontaneous, social',
+        overview: 'ESFPs engage with the world through vibrant energy and enthusiasm. Drawn to social interaction, performance, and joyful experiences, they naturally create excitement wherever they go. Their playful spirit and spontaneity help them enjoy life fully, and they often bring warmth and fun to groups and events.',
+        strengths: 'ESFPs are bold, unafraid to step outside their comfort zones and try new things. Their originality shines as they experiment and express themselves freely, refusing to be bound by tradition. Honest and direct communicators, ESFPs make it clear what they think and feel, creating open and genuine interactions.',
+        growth: 'ESFPs tend to avoid conflicts, quickly moving past them to seek more enjoyable experiences. Their need for excitement can lead to impulsive decisions and boredom with routine. They often struggle with long-term planning, preferring to take life as it comes rather than prepare extensively for the future.'
+      },
+      {
+        code: 'ENFP', role: 'Campaigner', traits: 'Enthusiastic, creative, free-spirited',
+        overview: 'ENFPs are driven by curiosity and emotional connection. Their enthusiasm for new ideas is contagious, and they excel at bringing out the best in themselves and those around them. Free-spirited and imaginative, they enjoy exploring possibilities and engaging in meaningful conversations that spark creativity and insight.',
+        strengths: 'ENFPs get genuinely excited about ideas and love sharing them with others, appreciating different perspectives and lively discussions. They are excellent communicators, able to make conversations fun, deep, and meaningful. Their easygoing nature allows them to balance spontaneity with thoughtful dialogue, making them vibrant companions and collaborators.',
+        growth: 'ENFPs can be unfocused, easily distracted by new projects and ideas, which sometimes hinders follow-through. They may prioritize people-pleasing, giving in to others at their own expense. Their love of big ideas can cause disorganization, leading them to overlook practical details and everyday responsibilities.'
+      },
+      {
+        code: 'ENTP', role: 'Debater', traits: 'Quick-witted, clever, idea-driven',
+        overview: 'ENTPs thrive on questioning, exploring, and debating everything around them. They love generating new ideas and challenging norms, constantly seeking growth and innovation. Their cleverness and quick wit make them engaging conversationalists who enjoy intellectual sparring and pushing boundaries.',
+        strengths: 'ENTPs are highly knowledgeable, drawn to learning abstract concepts simply because they find them fascinating. Charismatic and confident, they use their verbal skills to persuade and entertain, energizing themselves and others when pursuing exciting challenges. Their energetic drive fuels their willingness to work hard and solve difficult problems.',
+        growth: 'ENTPs may be intolerant of ideas or people who cannot logically defend their views, sometimes dismissing them quickly. Their focus on logic over feelings can lead to insensitivity, accidentally hurting others. Their love of debate can become argumentative, which may upset those who prefer harmony over conflict.'
+      },
+      {
+        code: 'ESTJ', role: 'Executive', traits: 'Organized, decisive, leader',
+        overview: 'ESTJs lead with a strong sense of order, valuing tradition, efficiency, and results. They are organized and decisive, often taking charge in both personal and professional life to ensure that systems run smoothly and goals are met. Their leadership is grounded in clear communication and a commitment to duty.',
+        strengths: 'ESTJs stand firm in their beliefs, showing strong will and dedication. They are known for finishing what they start, even when faced with boredom or difficulties. Their direct and honest communication style makes them reliable and trustworthy leaders who prioritize facts and clarity above all.',
+        growth: 'Their strong-willed nature may make them inflexible, unwilling to change their minds easily. Their focus on completing tasks can lead to rigid adherence to routine, sometimes at the expense of adaptability or creativity. They may come across as blunt or overly controlling in their drive for efficiency.'
+      },
+      {
+        code: 'ESFJ', role: 'Consul', traits: 'Caring, sociable, loyal',
+        overview: 'ESFJs are deeply attuned to the needs of others and work hard to create harmony around them. They naturally take on nurturing roles, building strong, loyal relationships with family, friends, and colleagues. Their sociable nature and practical skills make them effective at managing daily responsibilities and caring for their communities.',
+        strengths: 'ESFJs possess strong practical skills, excelling at handling everyday tasks with care and attention. Their strong sense of duty ensures they meet responsibilities reliably, fostering loyalty and trust among those around them. Their dedication to others creates stable, supportive environments where people feel valued and cared for.',
+        growth: 'ESFJs can sometimes be too needy for appreciation and compliments, seeking external validation. They worry about social status and how others perceive them, which may limit their creativity or lead to conformity. Their selflessness might overwhelm others at times, even though it is meant kindly.'
+      },
+      {
+        code: 'ENFJ', role: 'Protagonist', traits: 'Charismatic, inspiring, supportive',
+        overview: 'ENFJs lead with empathy and purpose, naturally inspiring and supporting those around them. They are driven by a desire to help others grow and often take on leadership roles that unite people around shared goals. Their charismatic presence and passion make them motivating and reliable partners, friends, and colleagues.',
+        strengths: 'ENFJs are reliable and do not like letting others down, always keeping their promises even when it is difficult. Their passion for many interests keeps them engaged and busy, while their charisma helps them bring people together effectively. Their ability to inspire makes them natural leaders and connectors.',
+        growth: 'ENFJs can sometimes come across as condescending, as their teaching style may seem patronizing to others. Their intense focus on self-improvement and goals may overwhelm people with less energy or drive. Their deep empathy sometimes leads them to take on others’ problems excessively, which can drain their own energy and well-being.'
+      },
+      {
+        code: 'ENTJ', role: 'Commander', traits: 'Visionary, confident, driven',
+        overview: 'ENTJs set clear goals and pursue them relentlessly. They lead with vision and logic, building systems and structures designed for progress and success. Their confidence and decisiveness enable them to handle challenges head-on, inspiring others with their ambitious drive.',
+        strengths: 'ENTJs hate wasting time and are highly efficient, quickly identifying and fixing anything that slows progress. Their self-confidence helps them speak up and trust their leadership abilities. Their strong willpower ensures they persevere until goals are achieved, demonstrating relentless determination.',
+        growth: 'ENTJs can be stubborn and dominant, sometimes ignoring others’ input or trying to control every decision. Their impatience can cause frustration when others take longer to process or respond. Their arrogance and high expectations may make them seem dismissive or overly proud, potentially alienating people around them.'
+      },
+    ];
+
+    // Duplicate the eight E/I x S/N x T/F x J/P to ensure 16 cards (add remaining 4 types by mapping patterns)
+    // Since your provided dataset includes 14 entries (missing ENTP? already included; missing ENTP? covered; likely missing two: ISTJ..ENTJ provided all 16 actually). We'll render as-is.
+
+    const grid = document.getElementById('grid');
+
+    function cardTemplate(t){
+      return `
+      <article class="card-border rounded-2xl bg-white/5 border border-white/10 p-5 md:p-6 hover:translate-y-[-2px] transition-transform">
+        <header class="flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-xl font-bold tracking-tight">${t.code} <span class="text-white/60 font-medium">· ${t.role}</span></h3>
+            <p class="text-white/70 text-sm">${t.traits}</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs bg-indigo-500/20 border border-indigo-400/30">${t.code.length === 4 ? t.code.slice(0,2)+'/'+t.code.slice(2) : 'Type'}</span>
+        </header>
+
+        <nav class="mt-4 flex gap-4 text-sm" role="tablist">
+          <button class="tab-btn relative text-white/70 hover:text-white" role="tab" aria-selected="true">Overview</button>
+          <button class="tab-btn relative text-white/70 hover:text-white" role="tab" aria-selected="false">Strengths</button>
+          <button class="tab-btn relative text-white/70 hover:text-white" role="tab" aria-selected="false">Growth Areas</button>
+        </nav>
+
+        <section class="mt-4 space-y-4">
+          <p class="tab-panel text-white/80">${t.overview}</p>
+          <p class="tab-panel text-white/80 hidden">${t.strengths}</p>
+          <p class="tab-panel text-white/80 hidden">${t.growth}</p>
+        </section>
+      </article>`
+    }
+
+    function render(list){
+      grid.innerHTML = list.map(cardTemplate).join('');
+      // Bind tab behavior for newly rendered cards
+      document.querySelectorAll('article').forEach(card => {
+        const tabs = card.querySelectorAll('.tab-btn');
+        const panels = card.querySelectorAll('.tab-panel');
+        tabs.forEach((btn, i) => {
+          btn.addEventListener('click', () => {
+            tabs.forEach(b => b.setAttribute('aria-selected', 'false'));
+            panels.forEach(p => p.classList.add('hidden'));
+            btn.setAttribute('aria-selected', 'true');
+            panels[i].classList.remove('hidden');
+          });
+        });
+      });
+    }
+
+    // Initial render
+    render(TYPES);
+
+    // Search
+    const search = document.getElementById('search');
+    const sort = document.getElementById('sort');
+
+    function applyFilters(){
+      const q = (search.value || '').toLowerCase().trim();
+      let list = TYPES.filter(t =>
+        !q || [t.code, t.role, t.traits, t.overview, t.strengths, t.growth].some(v => v.toLowerCase().includes(q))
+      );
+      if(sort.value === 'role'){
+        list = list.slice().sort((a,b)=> a.role.localeCompare(b.role));
+      } else {
+        list = list.slice().sort((a,b)=> a.code.localeCompare(b.code));
+      }
+      render(list);
+    }
+
+    search.addEventListener('input', applyFilters);
+    sort.addEventListener('change', applyFilters);
+  </script>
+</body>
+</html>

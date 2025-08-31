@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITBuddy - About Us</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" th:href="@{/css/main.css}"></head>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: 
+        radial-gradient(1200px 600px at 10% 10%, rgba(79,70,229,0.25), transparent 60%),
+        radial-gradient(800px 500px at 90% 20%, rgba(16,185,129,0.25), transparent 60%),
+        linear-gradient(135deg, #0f172a, #1f2937 40%, #111827);
+      background-attachment: fixed;
+      animation: gradientMove 20s ease infinite;
+      padding-top: 96px; /* space for navbar */
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+      50% { background-position: 20% 10%, 80% 30%, 10% 10%; }
+      100% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.4;
+      animation: blobMove linear infinite;
+      z-index: -1;
+    }
+    @keyframes blobMove {
+      0% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-50px) translateX(50px) scale(1.2); }
+      100% { transform: translateY(0) translateX(0) scale(1); }
+    }
+    html { scroll-behavior: smooth; }
+    .team-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    .social-icon {
+      transition: transform 0.2s ease;
+    }
+    .social-icon:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+
+  <!-- Navigation Bar -->
+  <!-- <nav class="flex justify-between items-center px-4 md:px-16 py-4 bg-white/10 backdrop-blur-md fixed top-0 w-full z-10 shadow-md">
+    <div class="text-xl md:text-2xl font-extrabold flex items-center gap-2">
+      <svg class="w-7 h-7 md:w-8 md:h-8 text-white animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M9 18v1a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-1M9 18H6a2 2 0 0 1-2-2v-5h16v5a2 2 0 0 1-2 2h-3M9 18V9a3 3 0 0 1 6 0v9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9" cy="13" r="1" fill="currentColor"/>
+        <circle cx="15" cy="13" r="1" fill="currentColor"/>
+      </svg>
+      <span>ITBuddy</span>
+    </div>
+
+    <ul class="hidden md:flex space-x-8 text-lg font-medium">
+      <li><a href="/" class="hover:text-gray-300 transition">Home</a></li>
+      <li><a href="/features" class="hover:text-gray-300 transition">Features</a></li>
+      <li><a href="/about" class="hover:text-gray-300 transition font-bold">About</a></li>
+      <li><a href="#contact" class="hover:text-gray-300 transition">Contact</a></li>
+      <li><a href="/MbtiDescription" class="hover:text-gray-300 transition">MBTI Description</a></li>
+    </ul>
+
+    <button id="openLogin" class="hidden md:block border border-white px-4 py-1 rounded hover:bg-white hover:text-black transition">Login</button>
+    <button id="openLoginMobile" class="md:hidden text-sm border px-3 py-1 rounded hover:bg-white hover:text-black transition">Login</button>
+  </nav> -->
+
+  
+  <!-- Navigation Bar -->
+  <div th:replace="fragments/navbar :: navbar"></div>
+
+  <!-- About Hero Section -->
+  <section class="flex flex-col items-center justify-center text-center px-4 md:px-0 py-16 md:py-24">
+    <h1 class="text-4xl md:text-5xl font-bold mb-6 drop-shadow-xl">About ITBuddy</h1>
+    <p class="text-lg md:text-xl max-w-3xl mb-8 text-white/90">
+      We're a passionate team dedicated to helping IT students find their perfect career path through AI-powered guidance and personality insights.
+    </p>
+    <div class="flex gap-4">
+       <a href="#mission" class="border border-white px-6 py-2 rounded-full text-lg font-semibold hover:bg-white hover:text-black transition">
+        Our Mission
+      </a>
+      <a href="#team" class="bg-white text-black px-6 py-2 rounded-full text-lg font-semibold hover:bg-gray-200 transition">
+        Meet Our Team
+      </a>
+     
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section id="mission" class="py-16 px-4 md:px-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Our Mission & Vision</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl">
+          <div class="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4">Our Mission</h3>
+          <p class="text-white/80">
+            To empower IT students with AI-driven career guidance that aligns with their personality, skills, and aspirations, making career planning accessible and effective for everyone.
+          </p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl">
+          <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4">Our Vision</h3>
+          <p class="text-white/80">
+            To become the world's most trusted career guidance platform for IT professionals, helping millions discover fulfilling careers that match their unique personalities and strengths.
+          </p>
+        </div>
+      </div>
+      
+      <div class="bg-white/5 backdrop-blur-md p-8 rounded-2xl">
+        <h3 class="text-2xl font-semibold mb-6 text-center">What Makes Us Different</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="text-center p-6">
+            <div class="w-14 h-14 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-lg mb-2">AI-Powered Insights</h4>
+            <p class="text-white/70 text-sm">Advanced algorithms provide personalized career recommendations based on your unique profile.</p>
+          </div>
+          
+          <div class="text-center p-6">
+            <div class="w-14 h-14 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-lg mb-2">MBTI Integration</h4>
+            <p class="text-white/70 text-sm">Leverage personality science to find careers that truly fit who you are.</p>
+          </div>
+          
+          <div class="text-center p-6">
+            <div class="w-14 h-14 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-lg mb-2">Community Focused</h4>
+            <p class="text-white/70 text-sm">Join a growing community of IT students and professionals sharing insights and experiences.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team" class="py-16 px-4 md:px-16 bg-white/5">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Meet Our Team</h2>
+      <p class="text-center text-white/80 max-w-2xl mx-auto mb-12">
+        The passionate people behind ITBuddy who are dedicated to helping you find your perfect career path in technology.
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Team Member 1 -->
+        <div class="team-card bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center">
+          <div class="w-32 h-32 rounded-full bg-indigo-500/20 mx-auto mb-6 flex items-center justify-center">
+            <span class="text-4xl font-bold text-indigo-300">MT</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">May Myat Thaw</h3>
+          <p class="text-indigo-300 mb-4">Backend Developer</p>
+          <p class="text-white/70 text-sm mb-4">
+            Myat Thaw is passionate about leveraging AI to solve real-world problems in education and career development.
+          </p>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="social-icon text-white/70 hover:text-indigo-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-indigo-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.033 10.033 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-indigo-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Team Member 2 -->
+        <div class="team-card bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center">
+          <div class="w-32 h-32 rounded-full bg-green-500/20 mx-auto mb-6 flex items-center justify-center">
+            <span class="text-4xl font-bold text-green-300">AK</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Aung Khaing Soe </h3>
+          <p class="text-green-300 mb-4">Frontend Developer</p>
+          <p class="text-white/70 text-sm mb-4">
+           Aung Khaing specialize in creating intuitive and engaging user interfaces that enhance user experience.
+          </p>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.033 10.033 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.37 0 0 5.37 0 12C0 17.31 3.435 21.795 8.205 23.385C8.805 23.49 9.03 23.13 9.03 22.815C9.03 22.53 9.015 21.585 9.015 20.58C6 21.135 5.22 19.845 4.98 19.17C4.845 18.825 4.26 17.76 3.75 17.475C3.33 17.25 2.73 16.665 3.735 16.65C4.68 16.635 5.355 17.55 5.58 17.91C6.66 19.725 8.385 19.215 9.075 18.9C9.18 18.12 9.495 17.595 9.84 17.295C7.17 16.995 4.38 15.96 4.38 11.37C4.38 10.065 4.845 8.985 5.61 8.145C5.49 7.845 5.07 6.615 5.73 4.965C5.73 4.965 6.735 4.65 9.03 6.195C9.99 5.925 11.01 5.79 12.03 5.79C13.05 5.79 14.07 5.925 15.03 6.195C17.325 4.635 18.33 4.965 18.33 4.965C18.99 6.615 18.57 7.845 18.45 8.145C19.215 8.985 19.68 10.05 19.68 11.37C19.68 15.975 16.875 16.995 14.205 17.295C14.64 17.67 15.015 18.39 15.015 19.515C15.015 21.12 15 22.41 15 22.815C15 23.13 15.225 23.505 15.825 23.385C18.2072 22.5808 20.2773 21.0498 21.7437 19.0074C23.2101 16.965 23.9995 14.5143 24 12C24 5.37 18.63 0 12 0Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Team Member 2 -->
+        <div class="team-card bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center">
+          <div class="w-32 h-32 rounded-full bg-green-500/20 mx-auto mb-6 flex items-center justify-center">
+            <span class="text-4xl font-bold text-green-300">UI</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Min Thant Naing</h3>
+          <p class="text-green-300 mb-4">Frontend Developer</p>
+          <p class="text-white/70 text-sm mb-4">
+           Min Thant Naing is passionate about creating seamless user experiences through innovative design and technology.
+          </p>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.033 10.033 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.37 0 0 5.37 0 12C0 17.31 3.435 21.795 8.205 23.385C8.805 23.49 9.03 23.13 9.03 22.815C9.03 22.53 9.015 21.585 9.015 20.58C6 21.135 5.22 19.845 4.98 19.17C4.845 18.825 4.26 17.76 3.75 17.475C3.33 17.25 2.73 16.665 3.735 16.65C4.68 16.635 5.355 17.55 5.58 17.91C6.66 19.725 8.385 19.215 9.075 18.9C9.18 18.12 9.495 17.595 9.84 17.295C7.17 16.995 4.38 15.96 4.38 11.37C4.38 10.065 4.845 8.985 5.61 8.145C5.49 7.845 5.07 6.615 5.73 4.965C5.73 4.965 6.735 4.65 9.03 6.195C9.99 5.925 11.01 5.79 12.03 5.79C13.05 5.79 14.07 5.925 15.03 6.195C17.325 4.635 18.33 4.965 18.33 4.965C18.99 6.615 18.57 7.845 18.45 8.145C19.215 8.985 19.68 10.05 19.68 11.37C19.68 15.975 16.875 16.995 14.205 17.295C14.64 17.67 15.015 18.39 15.015 19.515C15.015 21.12 15 22.41 15 22.815C15 23.13 15.225 23.505 15.825 23.385C18.2072 22.5808 20.2773 21.0498 21.7437 19.0074C23.2101 16.965 23.9995 14.5143 24 12C24 5.37 18.63 0 12 0Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Team Member 3 -->
+        <div class="team-card bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center">
+          <div class="w-32 h-32 rounded-full bg-purple-500/20 mx-auto mb-6 flex items-center justify-center">
+            <span class="text-4xl font-bold text-purple-300">YY</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Yu Ya Aung</h3>
+          <p class="text-purple-300 mb-4">UX/UI Designer</p>
+          <p class="text-white/70 text-sm mb-4">
+            Yu Ya creates intuitive and beautiful interfaces that make navigating career options a delightful experience.
+          </p>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="social-icon text-white/70 hover:text-purple-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-purple-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.033 10.033 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-purple-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.441 16.892c-2.102.144-6.784.144-8.883 0C5.282 16.736 5.017 15.622 5 12c.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0C18.718 7.264 18.982 8.378 19 12c-.018 3.629-.285 4.736-2.559 4.892zM10 9.658l4.917 2.338L10 14.342V9.658z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Team Member 4 -->
+        <div class="team-card bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center">
+          <div class="w-32 h-32 rounded-full bg-amber-500/20 mx-auto mb-6 flex items-center justify-center">
+            <span class="text-4xl font-bold text-amber-300">KK</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Kay Thari</h3>
+          <p class="text-amber-300 mb-4">Data Analysis</p>
+          <p class="text-white/70 text-sm mb-4">
+            Kay Kay   specialize in analyzing data to extract meaningful insights that drive our AI recommendations.
+          </p>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="social-icon text-white/70 hover:text-amber-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-amber-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.033 10.033 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-amber-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <!-- Team Member  5-->
+        <div class="team-card bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center">
+          <div class="w-32 h-32 rounded-full bg-green-500/20 mx-auto mb-6 flex items-center justify-center">
+            <span class="text-4xl font-bold text-green-300">Eain</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Lin Latt Eain</h3>
+          <p class="text-green-300 mb-4">Database Management</p>
+          <p class="text-white/70 text-sm mb-4">
+           Eain Eain specialize in managing and optimizing our database to ensure seamless data flow and integrity.
+          </p>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.033 10.033 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon text-white/70 hover:text-green-300">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.37 0 0 5.37 0 12C0 17.31 3.435 21.795 8.205 23.385C8.805 23.49 9.03 23.13 9.03 22.815C9.03 22.53 9.015 21.585 9.015 20.58C6 21.135 5.22 19.845 4.98 19.17C4.845 18.825 4.26 17.76 3.75 17.475C3.33 17.25 2.73 16.665 3.735 16.65C4.68 16.635 5.355 17.55 5.58 17.91C6.66 19.725 8.385 19.215 9.075 18.9C9.18 18.12 9.495 17.595 9.84 17.295C7.17 16.995 4.38 15.96 4.38 11.37C4.38 10.065 4.845 8.985 5.61 8.145C5.49 7.845 5.07 6.615 5.73 4.965C5.73 4.965 6.735 4.65 9.03 6.195C9.99 5.925 11.01 5.79 12.03 5.79C13.05 5.79 14.07 5.925 15.03 6.195C17.325 4.635 18.33 4.965 18.33 4.965C18.99 6.615 18.57 7.845 18.45 8.145C19.215 8.985 19.68 10.05 19.68 11.37C19.68 15.975 16.875 16.995 14.205 17.295C14.64 17.67 15.015 18.39 15.015 19.515C15.015 21.12 15 22.41 15 22.815C15 23.13 15.225 23.505 15.825 23.385C18.2072 22.5808 20.2773 21.0498 21.7437 19.0074C23.2101 16.965 23.9995 14.5143 24 12C24 5.37 18.63 0 12 0Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="py-16 px-4 md:px-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Our Core Values</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl text-center">
+          <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Innovation</h3>
+          <p class="text-white/80">
+            We continuously explore new technologies and approaches to provide the most accurate and helpful career guidance.
+          </p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl text-center">
+          <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Integrity</h3>
+          <p class="text-white/80">
+            We're committed to providing honest, transparent guidance that truly serves the best interests of our users.
+          </p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl text-center">
+          <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Community</h3>
+          <p class="text-white/80">
+            We believe in the power of community and collaboration to help everyone succeed in their IT careers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA Section -->
+  <section id="contact" class="py-16 px-4 md:px-16 bg-white/5">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Get In Touch</h2>
+      <p class="text-lg text-white/80 mb-10">
+        Have questions about ITBuddy or want to learn more about how we can help you?
+        We'd love to hear from you!
+      </p>
+      <a href="mailto:ITBuddySecE2@gmail.com" class="inline-block bg-white text-black px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">
+        Contact Us
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+  <script>
+    // Floating blobs
+    const colors = ['rgba(79,70,229,0.25)','rgba(16,185,129,0.25)','rgba(59,130,246,0.2)'];
+    for(let i=0;i<5;i++){
+      const blob=document.createElement('div');
+      blob.classList.add('blob');
+      blob.style.width=300+Math.random()*400+'px';
+      blob.style.height=300+Math.random()*400+'px';
+      blob.style.background=colors[i%colors.length];
+      blob.style.left=Math.random()*80+'vw';
+      blob.style.top=Math.random()*80+'vh';
+      blob.style.animationDuration=30+Math.random()*20+'s';
+      blob.style.animationDelay=Math.random()*10+'s';
+      blob.style.zIndex='-1';
+      document.body.appendChild(blob);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MBTI Types — Descriptions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root { --bg1: #0f172a; --bg2: #1e293b; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; }
+    /* Fancy gradient background */
+    .hero-bg {
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(79,70,229,0.25), transparent 60%),
+                  radial-gradient(800px 500px at 90% 20%, rgba(16,185,129,0.25), transparent 60%),
+                  linear-gradient(135deg, #0f172a, #1f2937 40%, #111827);
+    }
+   
+    /* Card gradient border */
+    .card-border { position: relative; }
+    .card-border::before {
+      content: ""; position: absolute; inset: 0; padding: 1px; border-radius: 1.25rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(16,185,129,0.85));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+    /* Tab underline animation */
+    .tab-btn[aria-selected="true"] { color: white; }
+    .tab-btn[aria-selected="true"]::after{
+      content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px; background: currentColor;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-white hero-bg">
+  <!-- Navigation Bar -->
+   <div class="fixed top-0 left-0 right-0 z-40">
+  <div th:replace="fragments/navbar :: navbar"></div>
+</div>
+  <div class="pt-19 md:pt-17 pb-16 min-h-[calc(100vh-5rem)] flex flex-col">
+    <!-- Header with search and filter -->
+<header class="sticky top-[4rem] z-40 backdrop-blur bg-white/5 border-b border-white/10 py-4">      <div class="max-w-7xl mx-auto px-4 md:px-8 flex items-center gap-4">
+        <div class="flex items-center gap-3">
+          <svg class="w-8 h-8 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 0 0 0 13.5Zm0 0v3m0-20.25v3M3 12H.75M23.25 12H21M5.47 5.47 3.75 3.75m16.5 16.5-1.72-1.72m0-13.06 1.72-1.72M3.75 20.25l1.72-1.72"/>
+          </svg>
+          <div>
+            <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">MBTI Personality Types</h1>
+            <p class="text-white/60 text-sm">Quick descriptions • strengths • growth areas</p>
+          </div>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="ml-auto flex items-center gap-2 w-full md:w-auto">
+          <div class="relative flex-1 md:flex-none">
+            <input id="search" type="text" placeholder="Search by code, name, trait..." class="w-full md:w-80 pl-10 pr-3 py-2 rounded-xl bg-white/10 border border-white/10 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/60" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"/></svg>
+          </div>
+          <select id="sort" class="hidden md:block bg-white/10 border border-white/10 rounded-xl px-3 py-2 focus:outline-none">
+            <option value="code">Sort: Code (A→Z)</option>
+            <option value="name">Sort: Name (A→Z)</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero blurb -->
+    <section class="max-w-7xl mx-auto pt-20 px-5 md:px-8 mt-8 md:mt-12">
+      <div class="rounded-2xl p-6 md:p-8 bg-white/5 border border-white/10">
+        <p class="text-lg md:text-xl leading-relaxed text-white/80">
+          Explore all 16 MBTI personality types with concise, friendly descriptions. Use the search box to filter by
+          <span class="text-white">type code</span> (e.g., <span class="font-semibold">INTJ</span>),
+          <span class="text-white">role name</span> (e.g., <span class="font-semibold">Architect</span>), or any
+          <span class="text-white">keyword</span> (e.g., <span class="font-semibold">creative</span>, <span class="font-semibold">organized</span>).
+        </p>
+      </div>
+    </section>
+
+    <!-- Cards Grid -->
+    <main class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+      <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <!-- Dynamic content from database -->
+        <div th:each="mbtiType : ${mbtiTypes}" class="card-border rounded-2xl bg-white/5 border border-white/10 p-5 md:p-6 hover:translate-y-[-2px] transition-transform">
+          <header class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="text-xl font-bold tracking-tight" th:text="${mbtiType.code}">INTJ</h3>
+              <p class="text-white/60 font-medium" th:text="${mbtiType.name}">Architect</p>
+              <p class="text-white/70 text-sm mt-1" th:text="${mbtiType.keyTraits}">Strategic, logical, innovative</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs bg-indigo-500/20 border border-indigo-400/30" th:text="${#strings.substring(mbtiType.code, 0, 2) + '/' + #strings.substring(mbtiType.code, 2, 4)}">IN/TJ</span>
+          </header>
+
+          <nav class="mt-4 flex gap-4 text-sm" role="tablist">
+            <button class="tab-btn relative text-white/70 hover:text-white" role="tab" aria-selected="true" th:onclick="|showTab(this, 'description-${mbtiType.id}')|">Overview</button>
+            <button class="tab-btn relative text-white/70 hover:text-white" role="tab" aria-selected="false" th:onclick="|showTab(this, 'strengths-${mbtiType.id}')|">Strengths</button>
+            <button class="tab-btn relative text-white/70 hover:text-white" role="tab" aria-selected="false" th:onclick="|showTab(this, 'weaknesses-${mbtiType.id}')|">Growth Areas</button>
+          </nav>
+
+          <section class="mt-4 space-y-4">
+            <p class="tab-panel text-white/80" th:id="'description-'+${mbtiType.id}" th:text="${mbtiType.description}">
+              INTJs are future-focused strategists who rely on logic and innovation to build detailed plans and systems.
+            </p>
+            <p class="tab-panel text-white/80 hidden" th:id="'strengths-'+${mbtiType.id}" th:text="${mbtiType.strengths}">
+              The strengths of INTJs lie in their rationality and informed decision-making.
+            </p>
+            <p class="tab-panel text-white/80 hidden" th:id="'weaknesses-'+${mbtiType.id}" th:text="${mbtiType.weaknesses}">
+              Despite their strengths, INTJs can be seen as rigid in their adherence to logic and facts.
+            </p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    
+  </div>
+   <div th:replace="fragments/footer :: footer"></div>
+
+
+  <script>
+    // Tab functionality
+    function showTab(button, tabId) {
+      // Get parent card
+      const card = button.closest('.card-border');
+      
+      // Update tab buttons
+      const tabs = card.querySelectorAll('.tab-btn');
+      tabs.forEach(tab => tab.setAttribute('aria-selected', 'false'));
+      button.setAttribute('aria-selected', 'true');
+      
+      // Show selected tab content
+      const panels = card.querySelectorAll('.tab-panel');
+      panels.forEach(panel => panel.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+    }
+
+    // Search and filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('search');
+      const sortSelect = document.getElementById('sort');
+      const cards = document.querySelectorAll('.card-border');
+      
+      function applyFilters() {
+        const query = searchInput.value.toLowerCase().trim();
+        
+        // Filter cards
+        cards.forEach(card => {
+          const code = card.querySelector('h3').textContent.toLowerCase();
+          const name = card.querySelector('.text-white\\/60').textContent.toLowerCase();
+          const traits = card.querySelector('.text-white\\/70').textContent.toLowerCase();
+          const description = card.querySelector('.tab-panel').textContent.toLowerCase();
+          
+          const matches = query === '' || 
+            code.includes(query) || 
+            name.includes(query) || 
+            traits.includes(query) || 
+            description.includes(query);
+            
+          card.style.display = matches ? 'block' : 'none';
+        });
+        
+        // Sort cards (if needed)
+        if (sortSelect && sortSelect.value === 'name') {
+          const container = document.getElementById('grid');
+          const cardArray = Array.from(cards).filter(card => card.style.display !== 'none');
+          
+          cardArray.sort((a, b) => {
+            const aName = a.querySelector('.text-white\\/60').textContent;
+            const bName = b.querySelector('.text-white\\/60').textContent;
+            return aName.localeCompare(bName);
+          });
+          
+          // Reappend sorted cards
+          cardArray.forEach(card => container.appendChild(card));
+        } else if (sortSelect && sortSelect.value === 'code') {
+          const container = document.getElementById('grid');
+          const cardArray = Array.from(cards).filter(card => card.style.display !== 'none');
+          
+          cardArray.sort((a, b) => {
+            const aCode = a.querySelector('h3').textContent;
+            const bCode = b.querySelector('h3').textContent;
+            return aCode.localeCompare(bCode);
+          });
+          
+          // Reappend sorted cards
+          cardArray.forEach(card => container.appendChild(card));
+        }
+      }
+      
+      searchInput.addEventListener('input', applyFilters);
+      
+      if (sortSelect) {
+        sortSelect.addEventListener('change', applyFilters);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add/Edit Course</title>
+</head>
+<body>
+<h1 th:text="${course.id == null ? 'Add Course' : 'Edit Course'}"></h1>
+
+<form th:action="@{/courses}" th:object="${course}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Career:</label>
+    <select th:field="*{career}">
+        <option th:each="c : ${careers}" th:value="${c}" th:text="${c.title}"></option>
+    </select>
+    <br/><br/>
+
+    <label>Platform:</label>
+    <input type="text" th:field="*{platform}" />
+    <br/><br/>
+
+    <label>Course Name:</label>
+    <input type="text" th:field="*{courseName}" />
+    <br/><br/>
+
+    <label>URL:</label>
+    <input type="text" th:field="*{url}" />
+    <br/><br/>
+
+    <button type="submit">Save</button>
+</form>
+
+<a th:href="@{/courses}">Back to list</a>
+</body>
+</html>

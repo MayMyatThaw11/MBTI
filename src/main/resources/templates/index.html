@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITBuddy - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/main.css}"></head>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: 
+        radial-gradient(1200px 600px at 10% 10%, rgba(79,70,229,0.25), transparent 60%),
+        radial-gradient(800px 500px at 90% 20%, rgba(16,185,129,0.25), transparent 60%),
+        linear-gradient(135deg, #0f172a, #1f2937 40%, #111827);
+      background-attachment: fixed;
+      animation: gradientMove 20s ease infinite;
+    }
+    
+    @keyframes gradientMove {
+      0% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+      50% { background-position: 20% 10%, 80% 30%, 10% 10%; }
+      100% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+    }
+    
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.4;
+      animation: blobMove linear infinite;
+      z-index: 0;
+    }
+    
+    @keyframes blobMove {
+      0% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-50px) translateX(50px) scale(1.2); }
+      100% { transform: translateY(0) translateX(0) scale(1); }
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    /* Custom animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 1s ease-out forwards;
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+    }
+    
+    .feature-card {
+      transition: all 0.4s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, #5eead4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: gradientShift 8s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .cta-button {
+      background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+      box-shadow: 0 4px 14px 0 rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .cta-button:hover {
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="text-black">
+    <!-- Navigation Bar -->
+  <div th:replace="fragments/navbar :: navbar"></div>
+
+
+  <!-- Hero Section -->
+  <section id="home" class="relative flex flex-col items-center justify-center text-center px-4 md:px-0 min-h-screen overflow-hidden">
+    <!-- Animated background elements -->
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
+      <div class="absolute bottom-1/3 right-1/4 w-96 h-96 bg-teal-500/15 rounded-full blur-3xl animate-pulse-medium"></div>
+      <div class="absolute top-1/3 right-1/3 w-64 h-64 bg-indigo-500/25 rounded-full blur-3xl animate-pulse-slow"></div>
+      
+      <!-- Floating particles -->
+      <div class="absolute inset-0 z-0 opacity-60">
+        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full animate-float-1"></div>
+        <div class="absolute top-1/3 right-1/3 w-1 h-1 bg-indigo-300 rounded-full animate-float-2"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-teal-300 rounded-full animate-float-3"></div>
+        <div class="absolute top-1/2 right-1/4 w-1 h-1 bg-purple-300 rounded-full animate-float-4"></div>
+        <div class="absolute bottom-1/3 left-1/4 w-2 h-2 bg-white rounded-full animate-float-5"></div>
+      </div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto animate-fade-in-up">
+      <!-- Main heading with gradient text -->
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-text">
+        Shape Your Future with ITBuddy
+      </h1>
+      
+      <!-- Subtitle -->
+      <p class="text-xl md:text-2xl lg:text-3xl mb-8 text-white/90 leading-relaxed max-w-3xl mx-auto">
+        Get <span class="font-semibold text-indigo-300">AI-powered career guidance</span> tailored to your 
+        <span class="font-semibold text-teal-300">goals</span>, 
+        <span class="font-semibold text-purple-300">interests</span>, and 
+        <span class="font-semibold text-indigo-300">skills</span>.
+      </p>
+      
+      <!-- Highlighted quote -->
+      <div class="relative inline-block mb-10">
+        <div class="absolute -inset-3 bg-gradient-to-r from-indigo-500/20 to-teal-500/20 blur-lg opacity-75 rounded-lg"></div>
+        <p class="relative text-lg md:text-xl italic text-white/80 glass-card px-6 py-4 rounded-lg">
+          "With the right guidance, every IT student can build a career they love."
+        </p>
+      </div>
+      
+      <!-- CTA Button -->
+      <div class="group relative inline-block mb-16">
+        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-600 to-teal-600 rounded-full blur-lg opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <a href="#mbti" class="relative flex items-center gap-3 cta-button px-8 py-4 rounded-full text-lg md:text-xl font-semibold transition-all duration-300 group-hover:scale-105">
+          <svg class="w-6 h-6 group-hover:animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Get Started Now</span>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+        <div class="w-1 h-3 bg-white/50 rounded-full mt-2 animate-scroll"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="relative py-20 px-4 md:px-8 bg-gradient-to-b from-transparent to-[#0f172a]/70">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-16 text-center gradient-text animate-fade-in-up">
+        Discover Your Potential
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <!-- Feature 1 -->
+        <div class="feature-card glass-card p-8 rounded-2xl animate-fade-in-up" style="animation-delay: 0.2s;">
+          <div class="w-16 h-16 mx-auto mb-6 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+            <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">AI Recommendations</h3>
+          <p class="text-white/80">Get personalized career and course suggestions tailored to your MBTI type and skills.</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="feature-card glass-card p-8 rounded-2xl animate-fade-in-up" style="animation-delay: 0.4s;">
+          <div class="w-16 h-16 mx-auto mb-6 bg-purple-500/20 rounded-xl flex items-center justify-center">
+            <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">MBTI Insights</h3>
+          <p class="text-white/80">Understand your personality and strengths with detailed MBTI descriptions and analysis.</p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="feature-card glass-card p-8 rounded-2xl animate-fade-in-up" style="animation-delay: 0.6s;">
+          <div class="w-16 h-16 mx-auto mb-6 bg-teal-500/20 rounded-xl flex items-center justify-center">
+            <svg class="w-8 h-8 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Progress Tracking</h3>
+          <p class="text-white/80">Track your learning and career goals with our intuitive dashboard and progress reports.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Additional content would go here -->
+
+  <script>
+    // Create animated background blobs
+    document.addEventListener('DOMContentLoaded', function() {
+      const colors = ['rgba(79,70,229,0.25)', 'rgba(16,185,129,0.25)', 'rgba(59,130,246,0.2)'];
+      
+      for(let i = 0; i < 5; i++) {
+        const blob = document.createElement('div');
+        blob.classList.add('blob');
+        blob.style.width = 300 + Math.random() * 400 + 'px';
+        blob.style.height = 300 + Math.random() * 400 + 'px';
+        blob.style.background = colors[i % colors.length];
+        blob.style.left = Math.random() * 80 + 'vw';
+        blob.style.top = Math.random() * 80 + 'vh';
+        blob.style.animationDuration = 30 + Math.random() * 20 + 's';
+        blob.style.animationDelay = Math.random() * 10 + 's';
+        blob.style.zIndex = '0';
+        document.body.appendChild(blob);
+      }
+      
+      // Add animations for elements when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in-up');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      
+      // Observe all elements with the animation class
+      document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+        observer.observe(el);
+      });
+    });
+    
+    // Custom animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse-slow {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 0.8; }
+      }
+      @keyframes pulse-medium {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+      }
+      @keyframes float-1 {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-30px) translateX(20px); }
+      }
+      @keyframes float-2 {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(20px) translateX(-15px); }
+      }
+      @keyframes float-3 {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-20px) translateX(-10px); }
+      }
+      @keyframes float-4 {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(15px) translateX(25px); }
+      }
+      @keyframes float-5 {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-25px) translateX(-20px); }
+      }
+      @keyframes scroll {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(10px); opacity: 0; }
+      }
+      
+      .animate-pulse-slow {
+        animation: pulse-slow 6s infinite;
+      }
+      .animate-pulse-medium {
+        animation: pulse-medium 4s infinite;
+      }
+      .animate-float-1 {
+        animation: float-1 8s infinite ease-in-out;
+      }
+      .animate-float-2 {
+        animation: float-2 10s infinite ease-in-out;
+        animation-delay: 1s;
+      }
+      .animate-float-3 {
+        animation: float-3 9s infinite ease-in-out;
+        animation-delay: 2s;
+      }
+      .animate-float-4 {
+        animation: float-4 11s infinite ease-in-out;
+        animation-delay: 0.5s;
+      }
+      .animate-float-5 {
+        animation: float-5 7s infinite ease-in-out;
+        animation-delay: 1.5s;
+      }
+      .animate-scroll {
+        animation: scroll 2s infinite;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

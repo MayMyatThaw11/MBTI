@@ -15,7 +15,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/MbtiDescription", "/feature", "/about").permitAll() 
-                        .requestMatchers("/auth/**").permitAll() // ✅ Login/Register
+                        .requestMatchers("/auth/**").permitAll() //  Login/Register
                         .requestMatchers("/questions/mbti","questions/custom" ).authenticated() // 🔐 Protected route
                         .anyRequest().permitAll())
                 // .formLogin(form -> form

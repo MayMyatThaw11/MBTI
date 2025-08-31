@@ -84,7 +84,7 @@
     }
 
     .circle.agree-border:hover {
-      background-color: #2e8b57;
+      background-color: #54ff9e;
     }
 
     .circle.neutral-border:hover {
@@ -92,7 +92,7 @@
     }
 
     .circle.disagree-border:hover {
-      background-color: #7d4c9e;
+      background-color: #ff4069;
     }
 
     /* Active (clicked) state */
@@ -101,7 +101,7 @@
     }
 
     .circle.active.agree-border {
-      background: #54f89b;
+      background: #4dff9a;
     }
 
     .circle.active.neutral-border {
@@ -109,7 +109,13 @@
     }
 
     .circle.active.disagree-border {
-      background: #ff2c2c;
+      background: #ff5c5c;
+    }
+    
+    /* Checkbox styling */
+    .checkbox-label.checked {
+      background-color: #c7d2fe;
+      border-color: #43efa1;
     }
   </style>
 </head>
@@ -156,10 +162,10 @@
 
             <!-- SECTION 1: checkboxes -->
             <div th:if="${section.sectionId == 1}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              <label th:each="option : ${question.options}"
-                class="flex items-center space-x-3 bg-indigo-50 rounded-md p-3 cursor-pointer hover:bg-indigo-100 transition">
+              <label th:each="option : ${question.options}" th:class="'checkbox-label flex items-center space-x-3 bg-indigo-50 rounded-md p-3 cursor-pointer hover:bg-indigo-100 transition' + (${option.optionText == 'None'} ? ' none-option' : '')">
                 <input type="checkbox" th:name="${'q_' + question.questionId + '[]'}" th:value="${option.optionText}"
-                  class="form-checkbox h-5 w-5 text-indigo-600" />
+                  class="form-checkbox h-5 w-5 text-indigo-600 section1-checkbox" 
+                  th:data-is-none="${option.optionText == 'None'}" />
                 <span th:text="${option.optionText}" class="text-md"></span>
               </label>
             </div>
@@ -214,87 +220,128 @@
   </div>
 
   <script>
-    const sections = document.querySelectorAll('.section-block');
-    const submitContainer = document.getElementById('submit-container');
-    const progressDots = document.querySelectorAll('form > div.flex.justify-center > button');
-    let currentSection = 0;
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('.section-block');
+      const submitContainer = document.getElementById('submit-container');
+      const progressDots = document.querySelectorAll('form > div.flex.justify-center > button');
+      let currentSection = 0;
 
-    function showSection(index) {
-      sections.forEach((sec, i) => {
-        if (i === index) {
-          sec.classList.add('active');
-        } else {
-          sec.classList.remove('active');
-        }
-      });
+      function showSection(index) {
+        sections.forEach((sec, i) => {
+          if (i === index) {
+            sec.classList.add('active');
+          } else {
+            sec.classList.remove('active');
+          }
+        });
 
-      // Show/hide submit button
-      submitContainer.style.display = (index === sections.length - 1) ? 'flex' : 'none';
+        // Show/hide submit button
+        submitContainer.style.display = (index === sections.length - 1) ? 'flex' : 'none';
 
-      // Update progress dots styling
-      progressDots.forEach((dot, i) => {
-        dot.classList.toggle('bg-indigo-600', i === index);
-        dot.classList.toggle('bg-gray-300', i !== index);
-      });
+        // Update progress dots styling
+        progressDots.forEach((dot, i) => {
+          dot.classList.toggle('bg-indigo-600', i === index);
+          dot.classList.toggle('bg-gray-300', i !== index);
+        });
 
-      // Disable prev/next buttons conditionally
+        // Disable prev/next buttons conditionally
+        sections.forEach((sec, i) => {
+          const prevBtn = sec.querySelector('.prev-btn');
+          const nextBtn = sec.querySelector('.next-btn');
+          if (i === index) {
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === sections.length - 1;
+          }
+        });
+      }
+
+      // Add listeners to prev/next buttons and progress dots
       sections.forEach((sec, i) => {
         const prevBtn = sec.querySelector('.prev-btn');
         const nextBtn = sec.querySelector('.next-btn');
-        if (i === index) {
-          prevBtn.disabled = index === 0;
-          nextBtn.disabled = index === sections.length - 1;
-        }
-      });
-    }
 
-    // Add listeners to prev/next buttons and progress dots
-    sections.forEach((sec, i) => {
-      const prevBtn = sec.querySelector('.prev-btn');
-      const nextBtn = sec.querySelector('.next-btn');
+        prevBtn.addEventListener('click', () => {
+          if (currentSection > 0) {
+            currentSection--;
+            showSection(currentSection);
+          }
+        });
 
-      prevBtn.addEventListener('click', () => {
-        if (currentSection > 0) {
-          currentSection--;
-          showSection(currentSection);
-        }
+        nextBtn.addEventListener('click', () => {
+          if (currentSection < sections.length - 1) {
+            currentSection++;
+            showSection(currentSection);
+          }
+        });
       });
 
-      nextBtn.addEventListener('click', () => {
-        if (currentSection < sections.length - 1) {
-          currentSection++;
-          showSection(currentSection);
-        }
+      // Progress dots click
+      progressDots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          currentSection = i;
+          showSection(i);
+        });
       });
-    });
 
-    // Progress dots click
-    progressDots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        currentSection = i;
-        showSection(i);
+      // Initialize
+      showSection(currentSection);
+
+      // ---------------- Circle Radio Sync ----------------
+      document.querySelectorAll('.circle').forEach(circle => {
+        circle.addEventListener('click', function() {
+          const value = this.dataset.value;
+          // Find the question container that holds both circles and radios
+          const questionContainer = this.closest('.flex.items-center.justify-center');
+          
+          // Select the correct hidden radio button
+          const radio = questionContainer.querySelector(`input[value="${value}"]`);
+          if (radio) {
+            radio.checked = true;
+            
+            // Reset actives in this question group only
+            questionContainer.querySelectorAll('.circle').forEach(c => c.classList.remove('active'));
+            
+            // Set current active
+            this.classList.add('active');
+          }
+        });
       });
-    });
 
-    // Initialize
-    showSection(currentSection);
-
-    // ---------------- Circle Radio Sync ----------------
-    document.querySelectorAll('.circle').forEach(circle => {
-      circle.addEventListener('click', function () {
-        const value = this.dataset.value;
-        const container = this.closest('div');
-        const name = container.querySelector('input[type="radio"]').name;
-
-        // Select hidden radio
-        const radio = container.querySelector(`input[value="${value}"]`);
-        if (radio) radio.checked = true;
-
-        // Reset actives
-        container.querySelectorAll('.circle').forEach(c => c.classList.remove('active'));
-
-        // Set current active
-        this.classList.add('active');
+      // ---------------- Checkbox None/Others Logic ----------------
+      document.querySelectorAll('.section1-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          const isNone = this.getAttribute('data-is-none') === 'true';
+          const questionContainer = this.closest('.grid');
+          const label = this.closest('.checkbox-label');
+          
+          // Toggle visual state
+          if (this.checked) {
+            label.classList.add('checked');
+          } else {
+            label.classList.remove('checked');
+          }
+          
+          if (isNone) {
+            // If "None" is checked, uncheck all other checkboxes
+            if (this.checked) {
+              questionContainer.querySelectorAll('.section1-checkbox').forEach(cb => {
+                if (cb !== this && cb.getAttribute('data-is-none') !== 'true') {
+                  cb.checked = false;
+                  cb.closest('.checkbox-label').classList.remove('checked');
+                }
+              });
+            }
+          } else {
+            // If any other checkbox is checked, uncheck "None"
+            if (this.checked) {
+              const noneCheckbox = questionContainer.querySelector('.section1-checkbox[data-is-none="true"]');
+              if (noneCheckbox) {
+                noneCheckbox.checked = false;
+                noneCheckbox.closest('.checkbox-label').classList.remove('checked');
+              }
+            }
+          }
+        });
       });
     });
   </script>
